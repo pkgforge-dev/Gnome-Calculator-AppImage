@@ -57,6 +57,9 @@ for lang in $langs; do
   cp -vr /usr/share/help/$lang/gnome-calculator/* ./AppDir/share/help/$lang/gnome-calculator/
 done
 
+## Copy the icon to AppDir's share, as it's not copied by default
+cp -v "$ICON"      ./AppDir/"${ICON#/usr}"
+
 ## Copy search integration files
 mkdir -p ./AppDir/share/gnome-shell/search-providers/
 cp -v /usr/share/gnome-shell/search-providers/org.gnome.Calculator-search-provider.ini ./AppDir/share/gnome-shell/search-providers/org.gnome.Calculator-search-provider.ini
@@ -74,7 +77,7 @@ cat << 'EOF' > ./AppDir/bin/search-integration.hook
 CURRENTDIR="$(cd "${0%/*}"/.. && echo "$PWD")"
 SHAREDIR="${XDG_DATA_HOME:-$HOME/.local/share}"
 
-# Copy search-provider files to the host, so Gnome Calculator entry is available in search options
+# Attempt to copy search-provider files to the host, so Gnome Calculator entry is available in search options
 if command -v gnome-shell 1>/dev/null; then
   if [ ! -d "${SHAREDIR}/gnome-shell/search-providers/" ]; then
     mkdir -p "${SHAREDIR}/gnome-shell/search-providers/"
