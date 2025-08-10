@@ -76,9 +76,15 @@ SHAREDIR="${XDG_DATA_HOME:-$HOME/.local/share}"
 
 # Copy search-provider files to the host, so Gnome Calculator entry is available in search options
 if command -v gnome-shell 1>/dev/null; then
+  if [ -d "${SHAREDIR}/gnome-shell/search-providers/" ]; then
+    mkdir -p "${SHAREDIR}/gnome-shell/search-providers/"
+  fi
   if [ ! -f "${SHAREDIR}/gnome-shell/search-providers/org.gnome.Calculator-search-provider.ini" ]; then
     cp "${CURRENTDIR}/share/gnome-shell/search-providers/org.gnome.Calculator-search-provider.ini" "${SHAREDIR}/gnome-shell/search-providers/org.gnome.Calculator-search-provider.ini"
   fi
+fi
+if [ -d "${SHAREDIR}/dbus-1/services/" ]; then
+  mkdir -p "${SHAREDIR}/dbus-1/services/"
 fi
 if [ ! -f "${SHAREDIR}/dbus-1/services/org.gnome.Calculator.SearchProvider.service" ]; then
   cp "${CURRENTDIR}/share/dbus-1/services/org.gnome.Calculator.SearchProvider.service" "${SHAREDIR}/dbus-1/services/org.gnome.Calculator.SearchProvider.service"
