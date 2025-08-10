@@ -58,7 +58,7 @@ for lang in $langs; do
 done
 
 ## Copy the icon to AppDir's share, as it's not copied by default
-mkdir -p           ./AppDir/share/applications/
+mkdir -p           ./AppDir/share/icons/hicolor/scalable/apps/
 cp -v "$ICON"      ./AppDir/"${ICON#/usr/}"
 
 ## Copy search integration files
