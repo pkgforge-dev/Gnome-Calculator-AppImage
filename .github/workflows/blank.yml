@@ -20,12 +20,11 @@ jobs:
       run: |
         chmod +x ./get-dependencies.sh && ./get-dependencies.sh
         
-    - name: Make AppImage/AppBundle
+    - name: Make AppImage
       run: |
        chmod +x ./*-appimage.sh && ./*-appimage.sh
        mkdir dist
        mv *.AppImage* dist/
-       mv *.AppBundle* dist/
 
     - name: Check version file
       run: |
@@ -74,7 +73,6 @@ jobs:
             make_latest: true
             files: |
               *.AppImage*
-              *.AppBundle*
   
         - uses: actions/checkout@v4
         - name: Update LATEST_VERSION
