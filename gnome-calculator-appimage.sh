@@ -40,18 +40,3 @@ chmod +x ./quick-sharun
 wget --retry-connrefused --tries=30 "$URUNTIME" -O ./uruntime2appimage
 chmod +x ./uruntime2appimage
 ./uruntime2appimage
-
-# Set up the PELF toolchain
-wget --retry-connrefused --tries=30 \
-	"https://github.com/xplshn/pelf/releases/latest/download/pelf_$ARCH" -O ./pelf
-chmod +x ./pelf
-
-echo "Generating [dwfs]AppBundle...(Go runtime)"
-./pelf --add-appdir ./AppDir \
-	--appbundle-id="$PACKAGE-$VERSION" \
-	--compression "-C zstd:level=22 -S26 -B8" \
-	--output-to "$PACKAGE-$VERSION-anylinux-$ARCH.dwfs.AppBundle" \
-
-zsyncmake *.AppBundle -u *.AppBundle
-
-echo "All Done!"
