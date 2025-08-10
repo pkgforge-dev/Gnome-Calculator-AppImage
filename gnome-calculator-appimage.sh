@@ -71,7 +71,7 @@ wget --retry-connrefused --tries=30 "$UPDATER" -O ./AppDir/bin/appimageupdatetoo
 cat << 'EOF' > ./AppDir/bin/search-integration.hook
 #!/bin/sh
 
-CURRENTDIR="$(cd "${0%/*}" && echo "$PWD")"
+CURRENTDIR="$(cd "${0%/*}"/.. && echo "$PWD")"
 SHAREDIR="${XDG_DATA_HOME:-$HOME/.local/share}"
 
 # Copy search-provider files to the host, so Gnome Calculator entry is available in search options
