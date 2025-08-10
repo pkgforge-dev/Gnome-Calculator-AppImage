@@ -33,7 +33,7 @@ StartupWMClass=gnome-calculator
 # DEPLOY ALL LIBS
 wget --retry-connrefused --tries=30 "$SHARUN" -O ./quick-sharun
 chmod +x ./quick-sharun
-./quick-sharun /usr/bin/gnome-calculator /usr/bin/gcalccmd /usr/lib/gnome-calculator-search-provider /usr/share/help/*/gnome-calculator/*
+./quick-sharun /usr/bin/gnome-calculator /usr/bin/gcalccmd /usr/lib/gnome-calculator-search-provider
 cp -vr /usr/share/vala ./AppDir/share/
 cp -vr /usr/share/devhelp ./AppDir/share/
 
@@ -46,6 +46,13 @@ find ./AppDir/share/locale -type f
 sed -i 's|/usr/share|././/share|g' ./AppDir/shared/bin/gnome-calculator
 ## Needed when locale patch is used
 echo 'SHARUN_WORKING_DIR=${SHARUN_DIR}' > ./AppDir/.env
+
+## Copy help files for Help section to work
+langs=$(find /usr/share/help/*/gnome-calculator/ -type f | awk -F'/' '{print $5}' | sort | uniq)
+for lang in $langs; do
+  mkdir -p ./AppDir/share/help/$lang/gnome-calculator/
+  cp -vr /usr/share/help/$lang/gnome-calculator/* ./AppDir/share/help/$lang/gnome-calculator/
+done
 
 # Symlink sharun AppRun
 ln ./AppDir/sharun ./AppDir/AppRun
