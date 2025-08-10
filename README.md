@@ -1,5 +1,5 @@
 # gnome-calculator-appimage
-Test of Gnome Calculator AppImage
+Test of Gnome Calculator AppImage, not intended for daily-driving yet.
 
 ## Known issues
 - On Fedora, currency conversion doesn't work while it works in other distros, investigating the issue here:  
