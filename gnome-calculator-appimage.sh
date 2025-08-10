@@ -4,7 +4,7 @@ set -eux
 
 ARCH="$(uname -m)"
 PACKAGE=gnome-calculator
-ICON=/usr/share/icons/hicolor/scalable/apps/org.gnome.Calendar.svg
+ICON=/usr/share/icons/hicolor/scalable/apps/org.gnome.Calculator.svg
 DESKTOP=/usr/share/applications/org.gnome.Calculator.desktop
 URUNTIME="https://raw.githubusercontent.com/pkgforge-dev/Anylinux-AppImages/refs/heads/main/useful-tools/uruntime2appimage.sh"
 SHARUN="https://raw.githubusercontent.com/pkgforge-dev/Anylinux-AppImages/refs/heads/main/useful-tools/quick-sharun.sh"
