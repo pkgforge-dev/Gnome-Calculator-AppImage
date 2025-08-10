@@ -57,10 +57,30 @@ for lang in $langs; do
   cp -vr /usr/share/help/$lang/gnome-calculator/* ./AppDir/share/help/$lang/gnome-calculator/
 done
 
-# Get AppRun & integrate self-updater
+# Get AppRun, integrate self-updater & integrate search into settings
 wget --retry-connrefused --tries=30 "$APPRUN"  -O ./AppDir/AppRun
 wget --retry-connrefused --tries=30 "$UPHOOK"  -O ./AppDir/bin/self-updater.bg.hook
 wget --retry-connrefused --tries=30 "$UPDATER" -O ./AppDir/bin/appimageupdatetool
+
+cat << 'EOF' > ./AppDir/bin/search-integration.hook
+#!/bin/sh
+
+CURRENTDIR="$(cd "${0%/*}" && echo "$PWD")"
+SHAREDIR="${XDG_DATA_HOME:-$HOME/.local/share}"
+
+# Copy search-provider files to the host, so Gnome Calculator entry is available in search options
+if command -v gnome-shell 1>/dev/null; then
+  if [ ! -f "${SHAREDIR}/gnome-shell/search-providers/org.gnome.Calculator-search-provider.ini" ]; then
+    cp "${CURRENTDIR}/share/gnome-shell/search-providers/org.gnome.Calculator-search-provider.ini" "${SHAREDIR}/gnome-shell/search-providers/org.gnome.Calculator-search-provider.ini"
+  fi
+fi
+if [ ! -f "${SHAREDIR}/dbus-1/services/org.gnome.Calculator.SearchProvider.service" ]; then
+  cp "${CURRENTDIR}/share/dbus-1/services/org.gnome.Calculator.SearchProvider.service" "${SHAREDIR}/dbus-1/services/org.gnome.Calculator.SearchProvider.service"
+fi
+# Dir needs to changed every time AppImage launches for search provider to work
+sed -i 's|/usr/lib/gnome-calculator-search-provider|'"${CURRENTDIR}/bin/gnome-calculator-search-provider"'|g' "${SHAREDIR}/dbus-1/services/org.gnome.Calculator.SearchProvider.service"
+EOF
+
 chmod +x ./AppDir/AppRun ./AppDir/bin/*.hook ./AppDir/bin/appimageupdatetool
 
 # MAKE APPIMAGE WITH URUNTIME
