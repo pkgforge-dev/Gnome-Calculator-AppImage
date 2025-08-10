@@ -58,7 +58,7 @@ for lang in $langs; do
 done
 
 ## Copy the icon to AppDir's share, as it's not copied by default
-cp -v "$ICON"      ./AppDir/"${ICON#/usr}"
+cp -v "$ICON"      ./AppDir/"${ICON#/usr/}"
 
 ## Copy search integration files
 mkdir -p ./AppDir/share/gnome-shell/search-providers/
