@@ -17,24 +17,23 @@ export OUTNAME="$PACKAGE"-"$VERSION"-anylinux-"$ARCH".AppImage
 
 # Prepare AppDir
 mkdir -p ./AppDir/shared/lib
-cd ./AppDir
+APP_DIR="$PWD/AppDir"
 
 # Copy desktop file & icon
-cp -v "$DESKTOP"   ./
-cp -v "$ICON"      ./
-cp -v "$ICON"      ./.DirIcon
+cp -v "$DESKTOP"   "$APP_DIR"
+cp -v "$ICON"      "$APP_DIR"
+cp -v "$ICON"      "$APP_DIR/.DirIcon"
 
 # Patch StartupWMClass to work on X11
 # Doesn't work when ran in Wayland, as it's 'org.gnome.Calculator' instead.
 # It needs to be manually changed by the user in this case.
 sed -i '/^\[Desktop Entry\]/a\
 StartupWMClass=gnome-calculator
-' ./"${DESKTOP##*/}"
+' "${APP_DIR}/${DESKTOP##*/}"
 
 # DEPLOY ALL LIBS
 wget --retry-connrefused --tries=30 "$SHARUN" -O ./quick-sharun
 chmod +x ./quick-sharun
-export DST_DIR="$PWD"/AppDir
 ./quick-sharun /usr/bin/gnome-calculator
 
 # MAKE APPIMAGE WITH URUNTIME
