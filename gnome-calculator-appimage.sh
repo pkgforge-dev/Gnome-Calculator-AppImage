@@ -21,7 +21,7 @@ mkdir -p ./AppDir/shared/lib
 # Copy desktop file & icon
 cp -v "$DESKTOP"   ./AppDir/
 cp -v "$ICON"      ./AppDir/
-cp -v "$ICON"      ./AppDir/.DirIcon"
+cp -v "$ICON"      ./AppDir/.DirIcon
 
 # Patch StartupWMClass to work on X11
 # Doesn't work when ran in Wayland, as it's 'org.gnome.Calculator' instead.
