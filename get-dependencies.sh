@@ -26,7 +26,6 @@ pacman -Syu --noconfirm \
 	wget \
 	xorg-server-xvfb \
 	zsync
-# TODO: Build the app from source instead of relying on Arch repos
 echo "Installing the app & it's dependencies..."
 echo "---------------------------------------------------------------"
 pacman -Syu --noconfirm \
