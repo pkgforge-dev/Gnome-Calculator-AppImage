@@ -37,6 +37,14 @@ chmod +x ./quick-sharun
 cp -vr /usr/share/vala ./AppDir/share/
 cp -vr /usr/share/devhelp ./AppDir/share/
 
+## Copy locale manually, as sharun doesn't do that at the moment
+cp -vr /usr/lib/locale           ./AppDir/shared/lib
+cp -r /usr/share/locale          ./AppDir/share
+find ./AppDir/share/locale -type f ! -name '*glib*' ! -name '*gnome-calculator*' -delete
+find ./AppDir/share/locale -type f 
+## Fix hardcoded path for locale
+sed -i 's|/usr/share|././/share|g' ./AppDir/shared/bin/gnome-calculator
+
 # Symlink sharun AppRun
 ln ./AppDir/sharun ./AppDir/AppRun
 
