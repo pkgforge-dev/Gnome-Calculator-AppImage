@@ -29,7 +29,7 @@ cp -v "$ICON"      ./.DirIcon
 # It needs to be manually changed by the user in this case.
 sed -i '/^\[Desktop Entry\]/a\
 StartupWMClass=gnome-calculator
-' "$DESKTOP"
+' ./"${DESKTOP##*/}"
 
 # DEPLOY ALL LIBS
 wget --retry-connrefused --tries=30 "$SHARUN" -O ./quick-sharun
