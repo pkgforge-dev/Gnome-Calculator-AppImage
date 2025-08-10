@@ -44,6 +44,8 @@ find ./AppDir/share/locale -type f ! -name '*glib*' ! -name '*gnome-calculator*'
 find ./AppDir/share/locale -type f 
 ## Fix hardcoded path for locale
 sed -i 's|/usr/share|././/share|g' ./AppDir/shared/bin/gnome-calculator
+## Needed when locale patch is used
+echo 'SHARUN_WORKING_DIR=${SHARUN_DIR}' > ./AppDir/.env
 
 # Symlink sharun AppRun
 ln ./AppDir/sharun ./AppDir/AppRun
