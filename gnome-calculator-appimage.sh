@@ -90,7 +90,11 @@ if [ ! -f "${SHAREDIR}/dbus-1/services/org.gnome.Calculator.SearchProvider.servi
   cp "${CURRENTDIR}/share/dbus-1/services/org.gnome.Calculator.SearchProvider.service" "${SHAREDIR}/dbus-1/services/org.gnome.Calculator.SearchProvider.service"
 fi
 # Dir needs to changed every time AppImage launches for search provider to work
-sed -i 's|/usr/lib/gnome-calculator-search-provider|'"${CURRENTDIR}/bin/gnome-calculator-search-provider"'|g' "${SHAREDIR}/dbus-1/services/org.gnome.Calculator.SearchProvider.service"
+if [ "${APPIMAGE##*/}" = "gnome-calculator" ]; then
+  sed -i 's|/usr/lib/gnome-calculator-search-provider|'"${CURRENTDIR}/bin/gnome-calculator-search-provider"'|g' "${SHAREDIR}/dbus-1/services/org.gnome.Calculator.SearchProvider.service"
+else
+  sed -i 's|/usr/lib/gnome-calculator-search-provider|'"${APPIMAGE} gnome-calculator-search-provider"'|g' "${SHAREDIR}/dbus-1/services/org.gnome.Calculator.SearchProvider.service"
+fi
 EOF
 
 chmod +x ./AppDir/AppRun ./AppDir/bin/*.hook ./AppDir/bin/appimageupdatetool
