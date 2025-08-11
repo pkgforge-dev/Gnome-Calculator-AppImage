@@ -60,10 +60,10 @@ mkdir -p           ./AppDir/share/icons/hicolor/scalable/apps/
 cp -v "$ICON"      ./AppDir/"${ICON#/usr/}"
 
 ## Copy search integration files
-mkdir -p ./AppDir/share/gnome-shell/search-providers/
-cp -v /usr/share/gnome-shell/search-providers/org.gnome.Calculator-search-provider.ini ./AppDir/share/gnome-shell/search-providers/org.gnome.Calculator-search-provider.ini
-mkdir -p ./AppDir/share/dbus-1/services/
-cp -v /usr/share/dbus-1/services/org.gnome.Calculator.SearchProvider.service ./AppDir/share/dbus-1/services/org.gnome.Calculator.SearchProvider.service
+#mkdir -p ./AppDir/share/gnome-shell/search-providers/
+#cp -v /usr/share/gnome-shell/search-providers/org.gnome.Calculator-search-provider.ini ./AppDir/share/gnome-shell/search-providers/org.gnome.Calculator-search-provider.ini
+#mkdir -p ./AppDir/share/dbus-1/services/
+#cp -v /usr/share/dbus-1/services/org.gnome.Calculator.SearchProvider.service ./AppDir/share/dbus-1/services/org.gnome.Calculator.SearchProvider.service
 
 # Integrate self-updater
 wget --retry-connrefused --tries=30 "$UPDATER" -O ./AppDir/bin/appimageupdatetool
