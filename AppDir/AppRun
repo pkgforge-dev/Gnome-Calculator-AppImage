@@ -40,7 +40,7 @@ fi
 if [ -n "$1" ] && [ -f "$CURRENTDIR"/bin/"$1" ]; then
 	BIN="$1"
 	shift
-	exec "$WORKAROUND_PATH"/bin/"$BIN" "$@"
+	exec "$CURRENTDIR"/bin/"$BIN" "$@"
 elif [ -f "$CURRENTDIR"/bin/"$BIN" ]; then
 	exec "$CURRENTDIR"/bin/"$BIN" "$@"
 else
