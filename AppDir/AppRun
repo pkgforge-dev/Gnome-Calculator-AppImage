@@ -1,0 +1,42 @@
+#!/bin/sh
+
+set -e
+
+CURRENTDIR="$(cd "${0%/*}" && echo "$PWD")"
+APPDIR=${APPDIR:-SHARUN_DIR}
+MAIN_BIN="$(awk -F'=| ' '/^Exec=/{print $2; exit}' "$CURRENTDIR"/*.desktop)"
+MAIN_BIN="${MAIN_BIN##*/}"
+BIN="${ARGV0:-$0}"
+BIN="${BIN##*/}"
+unset ARGV0
+SHAREDIR="${XDG_DATA_HOME:-$HOME/.local/share}"
+
+# Attempt to copy search-provider files to the host, so Gnome Calculator entry is available in search options
+if command -v gnome-shell 1>/dev/null; then
+  if [ ! -d "${SHAREDIR}/gnome-shell/search-providers/" ]; then
+    mkdir -p "${SHAREDIR}/gnome-shell/search-providers/"
+  fi
+  if [ ! -f "${SHAREDIR}/gnome-shell/search-providers/org.gnome.Calculator-search-provider.ini" ]; then
+    cp "${APPDIR}/share/gnome-shell/search-providers/org.gnome.Calculator-search-provider.ini" "${SHAREDIR}/gnome-shell/search-providers/org.gnome.Calculator-search-provider.ini"
+  fi
+fi
+if [ ! -d "${SHAREDIR}/dbus-1/services/" ]; then
+  mkdir -p "${SHAREDIR}/dbus-1/services/"
+fi
+if [ ! -f "${SHAREDIR}/dbus-1/services/org.gnome.Calculator.SearchProvider.service" ]; then
+  cp "${APPDIR}/share/dbus-1/services/org.gnome.Calculator.SearchProvider.service" "${SHAREDIR}/dbus-1/services/org.gnome.Calculator.SearchProvider.service"
+fi
+if ! grep -q "${APPIMAGE} gnome-calculator-search-provider" "${SHAREDIR}/dbus-1/services/org.gnome.Calculator.SearchProvider.service"; then
+  sed -i 's|/usr/lib/gnome-calculator-search-provider|'"${APPIMAGE} gnome-calculator-search-provider"'|g' "${SHAREDIR}/dbus-1/services/org.gnome.Calculator.SearchProvider.service"
+fi
+
+# Check if there's $1 supplied as binary, then ARGV0, then main bin
+if [ -n "$1" ] && [ -f "$CURRENTDIR"/bin/"$1" ]; then
+	BIN="$1"
+	shift
+	exec "$WORKAROUND_PATH"/bin/"$BIN" "$@"
+elif [ -f "$CURRENTDIR"/bin/"$BIN" ]; then
+	exec "$CURRENTDIR"/bin/"$BIN" "$@"
+else
+	exec "$CURRENTDIR"/bin/"$MAIN_BIN" "$@"
+fi
