@@ -65,7 +65,7 @@ cp -v /usr/share/dbus-1/services/org.gnome.Calculator.SearchProvider.service ./A
 cat << 'EOF' > ./AppDir/bin/search-integration.hook
 #!/bin/sh
 
-CURRENTDIR="$(cd "${0%/*}"/.. && echo "$PWD")"
+APPDIR=${APPDIR:-SHARUN_DIR}
 SHAREDIR="${XDG_DATA_HOME:-$HOME/.local/share}"
 
 # Attempt to copy search-provider files to the host, so Gnome Calculator entry is available in search options
@@ -74,14 +74,14 @@ if command -v gnome-shell 1>/dev/null; then
     mkdir -p "${SHAREDIR}/gnome-shell/search-providers/"
   fi
   if [ ! -f "${SHAREDIR}/gnome-shell/search-providers/org.gnome.Calculator-search-provider.ini" ]; then
-    cp "${CURRENTDIR}/share/gnome-shell/search-providers/org.gnome.Calculator-search-provider.ini" "${SHAREDIR}/gnome-shell/search-providers/org.gnome.Calculator-search-provider.ini"
+    cp "${APPDIR}/share/gnome-shell/search-providers/org.gnome.Calculator-search-provider.ini" "${SHAREDIR}/gnome-shell/search-providers/org.gnome.Calculator-search-provider.ini"
   fi
 fi
 if [ ! -d "${SHAREDIR}/dbus-1/services/" ]; then
   mkdir -p "${SHAREDIR}/dbus-1/services/"
 fi
 if [ ! -f "${SHAREDIR}/dbus-1/services/org.gnome.Calculator.SearchProvider.service" ]; then
-  cp "${CURRENTDIR}/share/dbus-1/services/org.gnome.Calculator.SearchProvider.service" "${SHAREDIR}/dbus-1/services/org.gnome.Calculator.SearchProvider.service"
+  cp "${APPDIR}/share/dbus-1/services/org.gnome.Calculator.SearchProvider.service" "${SHAREDIR}/dbus-1/services/org.gnome.Calculator.SearchProvider.service"
 fi
 if ! grep -q "${APPIMAGE} gnome-calculator-search-provider" "${SHAREDIR}/dbus-1/services/org.gnome.Calculator.SearchProvider.service"; then
   sed -i 's|/usr/lib/gnome-calculator-search-provider|'"${APPIMAGE} gnome-calculator-search-provider"'|g' "${SHAREDIR}/dbus-1/services/org.gnome.Calculator.SearchProvider.service"
