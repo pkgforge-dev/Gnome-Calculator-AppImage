@@ -4,8 +4,6 @@ set -eux
 
 ARCH="$(uname -m)"
 PACKAGE=gnome-calculator
-ICON=/usr/share/icons/hicolor/scalable/apps/org.gnome.Calculator.svg
-DESKTOP=/usr/share/applications/org.gnome.Calculator.desktop
 URUNTIME="https://raw.githubusercontent.com/pkgforge-dev/Anylinux-AppImages/refs/heads/main/useful-tools/uruntime2appimage.sh"
 SHARUN="https://raw.githubusercontent.com/pkgforge-dev/Anylinux-AppImages/refs/heads/main/useful-tools/quick-sharun.sh"
 
@@ -14,13 +12,11 @@ VERSION=$(pacman -Q "$PACKAGE" | awk 'NR==1 {print $2; exit}')
 
 export UPINFO="gh-releases-zsync|${GITHUB_REPOSITORY%/*}|${GITHUB_REPOSITORY#*/}|latest|*$ARCH.AppImage.zsync"
 export OUTNAME="$PACKAGE"-"$VERSION"-anylinux-"$ARCH".AppImage
+export DESKTOP=/usr/share/applications/org.gnome.Calculator.desktop
+export ICON=/usr/share/icons/hicolor/scalable/apps/org.gnome.Calculator.svg
 
 # Prepare AppDir
 mkdir -p ./AppDir/shared/lib
-
-# Copy desktop file & icon
-cp -v "$DESKTOP"   ./AppDir/
-cp -v "$ICON"      ./AppDir/
 
 # Patch StartupWMClass to work on X11
 # Doesn't work when ran in Wayland, as it's 'org.gnome.Calculator' instead.
