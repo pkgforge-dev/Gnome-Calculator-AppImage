@@ -59,46 +59,9 @@ done
 mkdir -p           ./AppDir/share/icons/hicolor/scalable/apps/
 cp -v "$ICON"      ./AppDir/"${ICON#/usr/}"
 
-## Copy search integration files
-#mkdir -p ./AppDir/share/gnome-shell/search-providers/
-#cp -v /usr/share/gnome-shell/search-providers/org.gnome.Calculator-search-provider.ini ./AppDir/share/gnome-shell/search-providers/org.gnome.Calculator-search-provider.ini
-#mkdir -p ./AppDir/share/dbus-1/services/
-#cp -v /usr/share/dbus-1/services/org.gnome.Calculator.SearchProvider.service ./AppDir/share/dbus-1/services/org.gnome.Calculator.SearchProvider.service
-
 # Integrate self-updater
 wget --retry-connrefused --tries=30 "$UPDATER" -O ./AppDir/bin/appimageupdatetool
 chmod +x ./AppDir/bin/appimageupdatetool
-
-# Disable search integration until it works
-
-#cat << 'EOF' > ./AppDir/bin/search-integration.hook
-##!/bin/sh
-#
-#CURRENTDIR="$(cd "${0%/*}"/.. && echo "$PWD")"
-#SHAREDIR="${XDG_DATA_HOME:-$HOME/.local/share}"
-#
-## Attempt to copy search-provider files to the host, so Gnome Calculator entry is available in search options
-#if command -v gnome-shell 1>/dev/null; then
-#  if [ ! -d "${SHAREDIR}/gnome-shell/search-providers/" ]; then
-#    mkdir -p "${SHAREDIR}/gnome-shell/search-providers/"
-#  fi
-#  if [ ! -f "${SHAREDIR}/gnome-shell/search-providers/org.gnome.Calculator-search-provider.ini" ]; then
-#    cp "${CURRENTDIR}/share/gnome-shell/search-providers/org.gnome.Calculator-search-provider.ini" "${SHAREDIR}/gnome-shell/search-providers/org.gnome.Calculator-search-provider.ini"
-#  fi
-#fi
-#if [ ! -d "${SHAREDIR}/dbus-1/services/" ]; then
-#  mkdir -p "${SHAREDIR}/dbus-1/services/"
-#fi
-#if [ ! -f "${SHAREDIR}/dbus-1/services/org.gnome.Calculator.SearchProvider.service" ]; then
-#  cp "${CURRENTDIR}/share/dbus-1/services/org.gnome.Calculator.SearchProvider.service" "${SHAREDIR}/dbus-1/services/org.gnome.Calculator.SearchProvider.service"
-#fi
-## Dir needs to changed every time AppImage launches for search provider to work
-#if [ "${APPIMAGE##*/}" = "gnome-calculator" ]; then
-#  sed -i 's|/usr/lib/gnome-calculator-search-provider|'"${CURRENTDIR}/bin/gnome-calculator-search-provider"'|g' "${SHAREDIR}/dbus-1/services/org.gnome.Calculator.SearchProvider.service"
-#else
-#  sed -i 's|/usr/lib/gnome-calculator-search-provider|'"${APPIMAGE} gnome-calculator-search-provider"'|g' "${SHAREDIR}/dbus-1/services/org.gnome.Calculator.SearchProvider.service"
-#fi
-#EOF
 
 # MAKE APPIMAGE WITH URUNTIME
 wget --retry-connrefused --tries=30 "$URUNTIME" -O ./uruntime2appimage
