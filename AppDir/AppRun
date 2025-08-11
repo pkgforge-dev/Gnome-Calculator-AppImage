@@ -10,39 +10,42 @@ BIN="${ARGV0:-$0}"
 BIN="${BIN##*/}"
 unset ARGV0
 SHAREDIR="${XDG_DATA_HOME:-$HOME/.local/share}"
+INTEGRATE_SEARCH=0
 
-# Integrate search into Gnome Shell (as far as I know, this search integration only works in Gnome)
-if command -v gnome-shell 1>/dev/null; then
-  mkdir -p "${SHAREDIR}/gnome-shell/search-providers/"
-  if [ ! -f "${SHAREDIR}/gnome-shell/search-providers/org.gnome.Calculator-search-provider.ini" ]; then
-    cp "${APPDIR}/share/gnome-shell/search-providers/org.gnome.Calculator-search-provider.ini" "${SHAREDIR}/gnome-shell/search-providers/org.gnome.Calculator-search-provider.ini"
-  fi
-  # Workaround for different-named am/appman desktop file
-  if [ -f /usr/local/share/applications/gnome-calculator-AM.desktop ] || [ -f "${SHAREDIR}/applications/gnome-calculator-AM.desktop" ]; then
-    if ! grep -q "gnome-calculator-AM.desktop" "${SHAREDIR}/gnome-shell/search-providers/org.gnome.Calculator-search-provider.ini"; then
-      sed -i 's|org.gnome.Calculator.desktop|gnome-calculator-AM.desktop|g' "${SHAREDIR}/gnome-shell/search-providers/org.gnome.Calculator-search-provider.ini"
+# Unsuccessful attempt to integrate search into Gnome Shell
+if [ "$INTEGRATE_SEARCH" = 1 ]; then
+  if command -v gnome-shell 1>/dev/null; then
+    mkdir -p "${SHAREDIR}/gnome-shell/search-providers/"
+    if [ ! -f "${SHAREDIR}/gnome-shell/search-providers/org.gnome.Calculator-search-provider.ini" ]; then
+      cp "${APPDIR}/share/gnome-shell/search-providers/org.gnome.Calculator-search-provider.ini" "${SHAREDIR}/gnome-shell/search-providers/org.gnome.Calculator-search-provider.ini"
+    fi
+    # Workaround for different-named am/appman desktop file
+    if [ -f /usr/local/share/applications/gnome-calculator-AM.desktop ] || [ -f "${SHAREDIR}/applications/gnome-calculator-AM.desktop" ]; then
+      if ! grep -q "gnome-calculator-AM.desktop" "${SHAREDIR}/gnome-shell/search-providers/org.gnome.Calculator-search-provider.ini"; then
+        sed -i 's|org.gnome.Calculator.desktop|gnome-calculator-AM.desktop|g' "${SHAREDIR}/gnome-shell/search-providers/org.gnome.Calculator-search-provider.ini"
+      fi
+    fi
+    mkdir -p "${SHAREDIR}/dbus-1/services/"
+    if [ ! -f "${SHAREDIR}/dbus-1/services/org.gnome.Calculator.SearchProvider.service" ]; then
+      cp "${APPDIR}/share/dbus-1/services/org.gnome.Calculator.SearchProvider.service" "${SHAREDIR}/dbus-1/services/org.gnome.Calculator.SearchProvider.service"
+    fi
+    if ! grep -q "${APPIMAGE} gnome-calculator-search-provider" "${SHAREDIR}/dbus-1/services/org.gnome.Calculator.SearchProvider.service"; then
+      sed -i 's|/usr/lib/gnome-calculator-search-provider|'"${APPIMAGE} gnome-calculator-search-provider"'|g' "${SHAREDIR}/dbus-1/services/org.gnome.Calculator.SearchProvider.service"
     fi
   fi
-  mkdir -p "${SHAREDIR}/dbus-1/services/"
-  if [ ! -f "${SHAREDIR}/dbus-1/services/org.gnome.Calculator.SearchProvider.service" ]; then
-    cp "${APPDIR}/share/dbus-1/services/org.gnome.Calculator.SearchProvider.service" "${SHAREDIR}/dbus-1/services/org.gnome.Calculator.SearchProvider.service"
-  fi
-  if ! grep -q "${APPIMAGE} gnome-calculator-search-provider" "${SHAREDIR}/dbus-1/services/org.gnome.Calculator.SearchProvider.service"; then
-    sed -i 's|/usr/lib/gnome-calculator-search-provider|'"${APPIMAGE} gnome-calculator-search-provider"'|g' "${SHAREDIR}/dbus-1/services/org.gnome.Calculator.SearchProvider.service"
-  fi
-fi
 
-  # Check if there's $1 supplied as binary, then ARGV0, then main bin
-if [ -f "$CURRENTDIR"/bin/"$1" ] && [ "$1" = "gnome-calculator-search-provider" ]; then
-	BIN="$1"
-    shift
-	exec "$CURRENTDIR"/bin/"$BIN" "$@"
-elif [ -f "$CURRENTDIR"/bin/"$BIN" ]; then
-	exec "$CURRENTDIR"/bin/"$BIN" "$@"
-elif [ -f "$CURRENTDIR"/bin/"$1" ]; then
-	BIN="$1"
-	shift
-	exec "$CURRENTDIR"/bin/"$BIN" "$@"
-else
-	exec "$CURRENTDIR"/bin/"$MAIN_BIN" "$@"
+    # Check if there's $1 supplied as binary, then ARGV0, then main bin
+  if [ -f "$CURRENTDIR"/bin/"$1" ] && [ "$1" = "gnome-calculator-search-provider" ]; then
+	  BIN="$1"
+      shift
+	  exec "$CURRENTDIR"/bin/"$BIN" "$@"
+  elif [ -f "$CURRENTDIR"/bin/"$BIN" ]; then
+	  exec "$CURRENTDIR"/bin/"$BIN" "$@"
+  elif [ -f "$CURRENTDIR"/bin/"$1" ]; then
+	  BIN="$1"
+	  shift
+	  exec "$CURRENTDIR"/bin/"$BIN" "$@"
+  else
+	  exec "$CURRENTDIR"/bin/"$MAIN_BIN" "$@"
+  fi
 fi
