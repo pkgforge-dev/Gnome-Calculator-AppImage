@@ -41,7 +41,7 @@ pacman -U --noconfirm ./*.pkg.tar.zst
 rm -f ./*.pkg.tar.zst
 
 # Remove mesa, as GPU acceleration is not really needed for a calculator
-# It can use it from the host if available
+# We force cairo backend
 pacman -Rsndd --noconfirm mesa
 
 echo "All done!"

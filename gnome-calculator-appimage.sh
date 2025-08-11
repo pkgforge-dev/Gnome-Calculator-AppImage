@@ -57,6 +57,9 @@ done
 mkdir -p           ./AppDir/share/icons/hicolor/scalable/apps/
 cp -v "$ICON"      ./AppDir/"${ICON#/usr/}"
 
+## Force use of cairo backend
+echo "GSK_RENDERER=cairo" >> ./AppDir/.env
+
 # MAKE APPIMAGE WITH URUNTIME
 wget --retry-connrefused --tries=30 "$URUNTIME" -O ./uruntime2appimage
 chmod +x ./uruntime2appimage
