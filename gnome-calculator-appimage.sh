@@ -8,7 +8,6 @@ ICON=/usr/share/icons/hicolor/scalable/apps/org.gnome.Calculator.svg
 DESKTOP=/usr/share/applications/org.gnome.Calculator.desktop
 URUNTIME="https://raw.githubusercontent.com/pkgforge-dev/Anylinux-AppImages/refs/heads/main/useful-tools/uruntime2appimage.sh"
 SHARUN="https://raw.githubusercontent.com/pkgforge-dev/Anylinux-AppImages/refs/heads/main/useful-tools/quick-sharun.sh"
-UPDATER="https://github.com/pkgforge-dev/AppImageUpdate-Enhanced-Edition/releases/latest/download/appimageupdatetool+validate-$ARCH.AppImage"
 
 VERSION=$(pacman -Q "$PACKAGE" | awk 'NR==1 {print $2; exit}')
 [ -n "$VERSION" ] && echo "$VERSION" > ~/version
