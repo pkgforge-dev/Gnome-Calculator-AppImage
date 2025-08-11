@@ -8,13 +8,12 @@ ICON=/usr/share/icons/hicolor/scalable/apps/org.gnome.Calculator.svg
 DESKTOP=/usr/share/applications/org.gnome.Calculator.desktop
 URUNTIME="https://raw.githubusercontent.com/pkgforge-dev/Anylinux-AppImages/refs/heads/main/useful-tools/uruntime2appimage.sh"
 SHARUN="https://raw.githubusercontent.com/pkgforge-dev/Anylinux-AppImages/refs/heads/main/useful-tools/quick-sharun.sh"
-APPRUN="https://raw.githubusercontent.com/pkgforge-dev/Anylinux-AppImages/refs/heads/main/useful-tools/AppRun-generic"
 UPDATER="https://github.com/pkgforge-dev/AppImageUpdate-Enhanced-Edition/releases/latest/download/appimageupdatetool+validate-$ARCH.AppImage"
-UPHOOK="https://raw.githubusercontent.com/pkgforge-dev/Anylinux-AppImages/refs/heads/main/useful-tools/self-updater.bg.hook"
 
 VERSION=$(pacman -Q "$PACKAGE" | awk 'NR==1 {print $2; exit}')
 [ -n "$VERSION" ] && echo "$VERSION" > ~/version
 
+export ADD_HOOKS="self-updater.bg.hook"
 export UPINFO="gh-releases-zsync|${GITHUB_REPOSITORY%/*}|${GITHUB_REPOSITORY#*/}|latest|*$ARCH.AppImage.zsync"
 export OUTNAME="$PACKAGE"-"$VERSION"-anylinux-"$ARCH".AppImage
 
@@ -66,41 +65,41 @@ cp -v /usr/share/gnome-shell/search-providers/org.gnome.Calculator-search-provid
 mkdir -p ./AppDir/share/dbus-1/services/
 cp -v /usr/share/dbus-1/services/org.gnome.Calculator.SearchProvider.service ./AppDir/share/dbus-1/services/org.gnome.Calculator.SearchProvider.service
 
-# Get AppRun, integrate self-updater & integrate search into settings
-wget --retry-connrefused --tries=30 "$APPRUN"  -O ./AppDir/AppRun
-wget --retry-connrefused --tries=30 "$UPHOOK"  -O ./AppDir/bin/self-updater.bg.hook
+# Integrate self-updater
 wget --retry-connrefused --tries=30 "$UPDATER" -O ./AppDir/bin/appimageupdatetool
 
-cat << 'EOF' > ./AppDir/bin/search-integration.hook
-#!/bin/sh
+chmod +x ./AppDir/bin/appimageupdatetool
 
-CURRENTDIR="$(cd "${0%/*}"/.. && echo "$PWD")"
-SHAREDIR="${XDG_DATA_HOME:-$HOME/.local/share}"
+# Disable search integration until it works
 
-# Attempt to copy search-provider files to the host, so Gnome Calculator entry is available in search options
-if command -v gnome-shell 1>/dev/null; then
-  if [ ! -d "${SHAREDIR}/gnome-shell/search-providers/" ]; then
-    mkdir -p "${SHAREDIR}/gnome-shell/search-providers/"
-  fi
-  if [ ! -f "${SHAREDIR}/gnome-shell/search-providers/org.gnome.Calculator-search-provider.ini" ]; then
-    cp "${CURRENTDIR}/share/gnome-shell/search-providers/org.gnome.Calculator-search-provider.ini" "${SHAREDIR}/gnome-shell/search-providers/org.gnome.Calculator-search-provider.ini"
-  fi
-fi
-if [ ! -d "${SHAREDIR}/dbus-1/services/" ]; then
-  mkdir -p "${SHAREDIR}/dbus-1/services/"
-fi
-if [ ! -f "${SHAREDIR}/dbus-1/services/org.gnome.Calculator.SearchProvider.service" ]; then
-  cp "${CURRENTDIR}/share/dbus-1/services/org.gnome.Calculator.SearchProvider.service" "${SHAREDIR}/dbus-1/services/org.gnome.Calculator.SearchProvider.service"
-fi
-# Dir needs to changed every time AppImage launches for search provider to work
-if [ "${APPIMAGE##*/}" = "gnome-calculator" ]; then
-  sed -i 's|/usr/lib/gnome-calculator-search-provider|'"${CURRENTDIR}/bin/gnome-calculator-search-provider"'|g' "${SHAREDIR}/dbus-1/services/org.gnome.Calculator.SearchProvider.service"
-else
-  sed -i 's|/usr/lib/gnome-calculator-search-provider|'"${APPIMAGE} gnome-calculator-search-provider"'|g' "${SHAREDIR}/dbus-1/services/org.gnome.Calculator.SearchProvider.service"
-fi
-EOF
-
-chmod +x ./AppDir/AppRun ./AppDir/bin/*.hook ./AppDir/bin/appimageupdatetool
+#cat << 'EOF' > ./AppDir/bin/search-integration.hook
+##!/bin/sh
+#
+#CURRENTDIR="$(cd "${0%/*}"/.. && echo "$PWD")"
+#SHAREDIR="${XDG_DATA_HOME:-$HOME/.local/share}"
+#
+## Attempt to copy search-provider files to the host, so Gnome Calculator entry is available in search options
+#if command -v gnome-shell 1>/dev/null; then
+#  if [ ! -d "${SHAREDIR}/gnome-shell/search-providers/" ]; then
+#    mkdir -p "${SHAREDIR}/gnome-shell/search-providers/"
+#  fi
+#  if [ ! -f "${SHAREDIR}/gnome-shell/search-providers/org.gnome.Calculator-search-provider.ini" ]; then
+#    cp "${CURRENTDIR}/share/gnome-shell/search-providers/org.gnome.Calculator-search-provider.ini" "${SHAREDIR}/gnome-shell/search-providers/org.gnome.Calculator-search-provider.ini"
+#  fi
+#fi
+#if [ ! -d "${SHAREDIR}/dbus-1/services/" ]; then
+#  mkdir -p "${SHAREDIR}/dbus-1/services/"
+#fi
+#if [ ! -f "${SHAREDIR}/dbus-1/services/org.gnome.Calculator.SearchProvider.service" ]; then
+#  cp "${CURRENTDIR}/share/dbus-1/services/org.gnome.Calculator.SearchProvider.service" "${SHAREDIR}/dbus-1/services/org.gnome.Calculator.SearchProvider.service"
+#fi
+## Dir needs to changed every time AppImage launches for search provider to work
+#if [ "${APPIMAGE##*/}" = "gnome-calculator" ]; then
+#  sed -i 's|/usr/lib/gnome-calculator-search-provider|'"${CURRENTDIR}/bin/gnome-calculator-search-provider"'|g' "${SHAREDIR}/dbus-1/services/org.gnome.Calculator.SearchProvider.service"
+#else
+#  sed -i 's|/usr/lib/gnome-calculator-search-provider|'"${APPIMAGE} gnome-calculator-search-provider"'|g' "${SHAREDIR}/dbus-1/services/org.gnome.Calculator.SearchProvider.service"
+#fi
+#EOF
 
 # MAKE APPIMAGE WITH URUNTIME
 wget --retry-connrefused --tries=30 "$URUNTIME" -O ./uruntime2appimage
