@@ -19,6 +19,12 @@ if command -v gnome-shell 1>/dev/null; then
   if [ ! -f "${SHAREDIR}/gnome-shell/search-providers/org.gnome.Calculator-search-provider.ini" ]; then
     cp "${APPDIR}/share/gnome-shell/search-providers/org.gnome.Calculator-search-provider.ini" "${SHAREDIR}/gnome-shell/search-providers/org.gnome.Calculator-search-provider.ini"
   fi
+  # Workaround for different-named am/appman desktop file
+  if command -v appman 1>/dev/null || command -v am 1>/dev/null; then
+    if ! grep -q "gnome-calculator-AM.desktop" "${SHAREDIR}/gnome-shell/search-providers/org.gnome.Calculator-search-provider.ini"; then
+      sed -i 's|org.gnome.Calculator.desktop|gnome-calculator-AM.desktop|g' "${SHAREDIR}/gnome-shell/search-providers/org.gnome.Calculator-search-provider.ini"
+    fi
+  fi
 fi
 if [ ! -d "${SHAREDIR}/dbus-1/services/" ]; then
   mkdir -p "${SHAREDIR}/dbus-1/services/"
