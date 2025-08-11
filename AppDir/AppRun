@@ -33,19 +33,19 @@ if [ "$INTEGRATE_SEARCH" = 1 ]; then
       sed -i 's|/usr/lib/gnome-calculator-search-provider|'"${APPIMAGE} gnome-calculator-search-provider"'|g' "${SHAREDIR}/dbus-1/services/org.gnome.Calculator.SearchProvider.service"
     fi
   fi
+fi
 
-    # Check if there's $1 supplied as binary, then ARGV0, then main bin
-  if [ -f "$CURRENTDIR"/bin/"$1" ] && [ "$1" = "gnome-calculator-search-provider" ]; then
-	  BIN="$1"
-      shift
-	  exec "$CURRENTDIR"/bin/"$BIN" "$@"
-  elif [ -f "$CURRENTDIR"/bin/"$BIN" ]; then
-	  exec "$CURRENTDIR"/bin/"$BIN" "$@"
-  elif [ -f "$CURRENTDIR"/bin/"$1" ]; then
-	  BIN="$1"
-	  shift
-	  exec "$CURRENTDIR"/bin/"$BIN" "$@"
-  else
-	  exec "$CURRENTDIR"/bin/"$MAIN_BIN" "$@"
-  fi
+# Check if there's $1 supplied as binary, then ARGV0, then main bin
+if [ -f "$CURRENTDIR"/bin/"$1" ] && [ "$1" = "gnome-calculator-search-provider" ]; then
+	BIN="$1"
+    shift
+	exec "$CURRENTDIR"/bin/"$BIN" "$@"
+elif [ -f "$CURRENTDIR"/bin/"$BIN" ]; then
+	exec "$CURRENTDIR"/bin/"$BIN" "$@"
+elif [ -f "$CURRENTDIR"/bin/"$1" ]; then
+	BIN="$1"
+	shift
+	exec "$CURRENTDIR"/bin/"$BIN" "$@"
+else
+	exec "$CURRENTDIR"/bin/"$MAIN_BIN" "$@"
 fi
