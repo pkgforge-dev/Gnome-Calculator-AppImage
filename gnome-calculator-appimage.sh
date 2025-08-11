@@ -65,6 +65,8 @@ cp -v /usr/share/dbus-1/services/org.gnome.Calculator.SearchProvider.service ./A
 cat << 'EOF' > ./AppDir/bin/search-integration.hook
 #!/bin/sh
 
+set -x
+
 APPDIR=${APPDIR:-SHARUN_DIR}
 SHAREDIR="${XDG_DATA_HOME:-$HOME/.local/share}"
 
