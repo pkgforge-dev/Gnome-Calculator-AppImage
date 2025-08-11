@@ -87,7 +87,7 @@ if ! grep -q "${APPIMAGE} gnome-calculator-search-provider" "${SHAREDIR}/dbus-1/
   sed -i 's|/usr/lib/gnome-calculator-search-provider|'"${APPIMAGE} gnome-calculator-search-provider"'|g' "${SHAREDIR}/dbus-1/services/org.gnome.Calculator.SearchProvider.service"
 fi
 EOF
-chmod -x ./AppDir/bin/search-integration.hook
+chmod +x ./AppDir/bin/search-integration.hook
 
 # MAKE APPIMAGE WITH URUNTIME
 wget --retry-connrefused --tries=30 "$URUNTIME" -O ./uruntime2appimage
