@@ -37,11 +37,15 @@ if ! grep -q "${APPIMAGE} gnome-calculator-search-provider" "${SHAREDIR}/dbus-1/
 fi
 
 # Check if there's $1 supplied as binary, then ARGV0, then main bin
-if [ -n "$1" ] && [ -f "$CURRENTDIR"/bin/"$1" ]; then
+if [ -f "$CURRENTDIR"/bin/"$1" ] && [ "$1" = "gnome-calculator-search-provider" ]; then
 	BIN="$1"
 	shift
 	exec "$CURRENTDIR"/bin/"$BIN" "$@"
 elif [ -f "$CURRENTDIR"/bin/"$BIN" ]; then
+	exec "$CURRENTDIR"/bin/"$BIN" "$@"
+elif [ -f "$CURRENTDIR"/bin/"$1" ]; then
+	BIN="$1"
+	shift
 	exec "$CURRENTDIR"/bin/"$BIN" "$@"
 else
 	exec "$CURRENTDIR"/bin/"$MAIN_BIN" "$@"
