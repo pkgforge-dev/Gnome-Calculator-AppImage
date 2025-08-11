@@ -18,13 +18,6 @@ export ICON=/usr/share/icons/hicolor/scalable/apps/org.gnome.Calculator.svg
 # Prepare AppDir
 mkdir -p ./AppDir/shared/lib
 
-# Patch StartupWMClass to work on X11
-# Doesn't work when ran in Wayland, as it's 'org.gnome.Calculator' instead.
-# It needs to be manually changed by the user in this case.
-sed -i '/^\[Desktop Entry\]/a\
-StartupWMClass=gnome-calculator
-' ./AppDir/*.desktop
-
 # DEPLOY ALL LIBS
 wget --retry-connrefused --tries=30 "$SHARUN" -O ./quick-sharun
 chmod +x ./quick-sharun
@@ -52,6 +45,13 @@ done
 ## Copy the icon to AppDir's share, as it's not copied by default
 mkdir -p           ./AppDir/share/icons/hicolor/scalable/apps/
 cp -v "$ICON"      ./AppDir/"${ICON#/usr/}"
+
+# Patch StartupWMClass to work on X11
+# Doesn't work when ran in Wayland, as it's 'org.gnome.Calculator' instead.
+# It needs to be manually changed by the user in this case.
+sed -i '/^\[Desktop Entry\]/a\
+StartupWMClass=gnome-calculator
+' ./AppDir/*.desktop
 
 ## Force use of cairo backend
 echo "GSK_RENDERER=cairo" >> ./AppDir/.env
