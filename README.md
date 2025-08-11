@@ -4,9 +4,6 @@ Test of Gnome Calculator AppImage, not intended for daily-driving yet.
 ## Known issues / TO-DO
 
 - Build `gnome-calculator` from source instead of relying on Arch repos
-- I tried implementing search integration, but it doesn't work yet
-- When using non-portable mode, files for integrating search provider are cluttered in `$HOME`, so for clean uninstall, you need to additionally remove:
-  - `${XDG_DATA_HOME}/gnome-shell/search-providers/org.gnome.Calculator-search-provider.ini`
-  - `${XDG_DATA_HOME}/dbus-1/services/org.gnome.Calculator.SearchProvider.service`
-- On Fedora & Alpine, currency conversion doesn't work while it works in Arch-based distros, investigating the issue here:  
+- Search integration doesn't work (tried to make it work, but was unsuccessful)
+- On Fedora, Alpine & Maemo Leste currency conversion doesn't work while it works in Arch-based distros, investigating the issue here:  
 https://github.com/VHSgunzo/sharun/issues/56
