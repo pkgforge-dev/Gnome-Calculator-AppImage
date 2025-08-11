@@ -67,7 +67,6 @@ cp -v /usr/share/dbus-1/services/org.gnome.Calculator.SearchProvider.service ./A
 
 # Integrate self-updater
 wget --retry-connrefused --tries=30 "$UPDATER" -O ./AppDir/bin/appimageupdatetool
-
 chmod +x ./AppDir/bin/appimageupdatetool
 
 # Disable search integration until it works
