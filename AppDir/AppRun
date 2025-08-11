@@ -10,29 +10,17 @@ BIN="${ARGV0:-$0}"
 BIN="${BIN##*/}"
 unset ARGV0
 SHAREDIR="${XDG_DATA_HOME:-$HOME/.local/share}"
-INTEGRATE_SEARCH=0
+DBUS_SERVICE="${SHAREDIR}"/dbus-1/services/org.gnome.Calculator.SearchProvider.service
 
-# Unsuccessful attempt to integrate search into Gnome Shell
-if [ "$INTEGRATE_SEARCH" = 1 ]; then
-  if command -v gnome-shell 1>/dev/null; then
-    mkdir -p "${SHAREDIR}/gnome-shell/search-providers/"
-    if [ ! -f "${SHAREDIR}/gnome-shell/search-providers/org.gnome.Calculator-search-provider.ini" ]; then
-      cp "${APPDIR}/share/gnome-shell/search-providers/org.gnome.Calculator-search-provider.ini" "${SHAREDIR}/gnome-shell/search-providers/org.gnome.Calculator-search-provider.ini"
-    fi
-    # Workaround for different-named am/appman desktop file
-    if [ -f /usr/local/share/applications/gnome-calculator-AM.desktop ] || [ -f "${SHAREDIR}/applications/gnome-calculator-AM.desktop" ]; then
-      if ! grep -q "gnome-calculator-AM.desktop" "${SHAREDIR}/gnome-shell/search-providers/org.gnome.Calculator-search-provider.ini"; then
-        sed -i 's|org.gnome.Calculator.desktop|gnome-calculator-AM.desktop|g' "${SHAREDIR}/gnome-shell/search-providers/org.gnome.Calculator-search-provider.ini"
-      fi
-    fi
-    mkdir -p "${SHAREDIR}/dbus-1/services/"
-    if [ ! -f "${SHAREDIR}/dbus-1/services/org.gnome.Calculator.SearchProvider.service" ]; then
-      cp "${APPDIR}/share/dbus-1/services/org.gnome.Calculator.SearchProvider.service" "${SHAREDIR}/dbus-1/services/org.gnome.Calculator.SearchProvider.service"
-    fi
-    if ! grep -q "${APPIMAGE} gnome-calculator-search-provider" "${SHAREDIR}/dbus-1/services/org.gnome.Calculator.SearchProvider.service"; then
-      sed -i 's|/usr/lib/gnome-calculator-search-provider|'"${APPIMAGE} gnome-calculator-search-provider"'|g' "${SHAREDIR}/dbus-1/services/org.gnome.Calculator.SearchProvider.service"
-    fi
-  fi
+# successful(ish) attempt to integrate search into Gnome Shell
+if [ -n "$APPIMAGE" ] && command -v gnome-shell 1>/dev/null; then
+	mkdir -p "${SHAREDIR}"/dbus-1/services/
+	mkdir -p "${SHAREDIR}"/gnome-shell/search-providers/
+	echo '[D-BUS Service]' > "$DBUS_SERVICE"
+	echo 'Name=org.gnome.Calculator.SearchProvider' >> "$DBUS_SERVICE"
+	echo "Exec=$APPIMAGE gnome-calculator-search-provider" >> "$DBUS_SERVICE"
+	cp "${CURRENTDIR}"/share/gnome-shell/search-providers/org.gnome.Calculator-search-provider.ini \
+		"${SHAREDIR}"/gnome-shell/search-providers/
 fi
 
 # Check if there's $1 supplied as binary, then ARGV0, then main bin
