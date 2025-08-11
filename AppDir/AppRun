@@ -13,7 +13,7 @@ SHAREDIR="${XDG_DATA_HOME:-$HOME/.local/share}"
 DBUS_SERVICE="${SHAREDIR}"/dbus-1/services/org.gnome.Calculator.SearchProvider.service
 
 # successful(ish) attempt to integrate search into Gnome Shell
-if [ -n "$APPIMAGE" ]; then
+if [ -n "$APPIMAGE" ] && command -v gnome-shell 1>/dev/null; then
 	mkdir -p "${SHAREDIR}"/dbus-1/services/
 	mkdir -p "${SHAREDIR}"/gnome-shell/search-providers/
 	echo '[D-BUS Service]' > "$DBUS_SERVICE"
