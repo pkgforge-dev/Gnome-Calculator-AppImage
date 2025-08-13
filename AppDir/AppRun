@@ -4,15 +4,37 @@ set -e
 
 CURRENTDIR="$(cd "${0%/*}" && echo "$PWD")"
 APPDIR=${APPDIR:-SHARUN_DIR}
-MAIN_BIN="$(awk -F'=| ' '/^Exec=/{print $2; exit}' "$CURRENTDIR"/*.desktop)"
-MAIN_BIN="${MAIN_BIN##*/}"
 BIN="${ARGV0:-$0}"
 BIN="${BIN##*/}"
 unset ARGV0
+
+# get name of main binary from the .desktop file
+_get_main_bin_name() {
+	for f in "$CURRENTDIR"/*.desktop; do
+		[ -e "$f" ] || return 1
+		while IFS= read -r line; do
+			case "$line" in
+				Exec=*)
+					# strip Exec=
+					MAIN_BIN="${line#Exec=}"
+					# only get the bin name
+					MAIN_BIN="${MAIN_BIN##*/}"
+					# remove spaces and flags
+					MAIN_BIN="${MAIN_BIN%% *}"
+					return 0
+					;;
+			esac
+		done < "$f"
+	done
+	return 1
+}
+
+_get_main_bin_name
+
 SHAREDIR="${XDG_DATA_HOME:-$HOME/.local/share}"
 DBUS_SERVICE="${SHAREDIR}"/dbus-1/services/org.gnome.Calculator.SearchProvider.service
 
-# successful(ish) attempt to integrate search into Gnome Shell
+# Integrate search-provider into Gnome Shell
 if [ -n "$APPIMAGE" ] && command -v gnome-shell 1>/dev/null; then
 	mkdir -p "${SHAREDIR}"/dbus-1/services/
 	mkdir -p "${SHAREDIR}"/gnome-shell/search-providers/
@@ -23,7 +45,7 @@ if [ -n "$APPIMAGE" ] && command -v gnome-shell 1>/dev/null; then
 		"${SHAREDIR}"/gnome-shell/search-providers/
 fi
 
-# Check if there's $1 supplied as binary, then ARGV0, then main bin
+# Check if 'gnome-calculator-search-provider' is supplied as $1, then if ARGV0 is supplied, then if $1 is supplied as binary, then if it's the main bin
 if [ -f "$CURRENTDIR"/bin/"$1" ] && [ "$1" = "gnome-calculator-search-provider" ]; then
 	BIN="$1"
     shift
