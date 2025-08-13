@@ -37,12 +37,22 @@ if [ -n "$APPIMAGE" ] && command -v gnome-shell 1>/dev/null; then
   SHAREDIR="${XDG_DATA_HOME:-$HOME/.local/share}"
   DBUS_SERVICE="${SHAREDIR}"/dbus-1/services/org.gnome.Calculator.SearchProvider.service
   SEARCHP_INI="${SHAREDIR}"/gnome-shell/search-providers/org.gnome.Calculator-search-provider.ini
+  ANYLINUX_APPIMAGES_CONFIG="${XDG_CONFIG_HOME:-$HOME/.config}/anylinux-appimages"
+  ASK_STATE_MESSAGE_FILE="${ANYLINUX_APPIMAGES_CONFIG}/${BIN}-xdgdatadirs-message"
+  XDGDATADIRS_MESSAGE='In order for "gnome-calculator" AppImage to have search-integration working with "gnome-shell", please add the XDG_DATA_HOME variable to XDG_DATA_DIRS, which can be done in shell profile, like this:
+
+export XDG_DATA_DIRS="${XDG_DATA_HOME:-$HOME/.local/share}:${XDG_DATA_DIRS}"
+
+Then restart the system for changes to apply.
+
+To not get asked again about this change, click "No".'
 
   _display_message() {
+      echo "$*"
 	  if command -v kdialog 1>/dev/null; then
-	    kdialog --msgbox "$*" 2>/dev/null || return 1
+	    kdialog --yesno "$*" 2>/dev/null || return 1
 	  elif command -v zenity 1>/dev/null; then
-	    zenity --info --text "$*" 2>/dev/null || return 1
+	    zenity --question --text "$*" 2>/dev/null || return 1
 	  elif command -v yad 1>/dev/null; then
 		yad --text="$*" 2>/dev/null || return 1
 	  fi
@@ -53,9 +63,20 @@ if [ -n "$APPIMAGE" ] && command -v gnome-shell 1>/dev/null; then
   esac
 
   if ! ${xdg_data_dirs_satisfied:-false}; then
-    _display_message 'In order for 'gnome-calculator' AppImage to have search-integration working with 'gnome-shell', please add XDG_DATA_HOME variable to XDG_DATA_DIRS, which can be done in shell profile, like this:
-
-export XDG_DATA_DIRS="${XDG_DATA_HOME:-$HOME/.local/share}:${XDG_DATA_DIRS}"'
+    if [ -f "$ASK_STATE_MESSAGE_FILE" ]; then
+      read -r STATE < "$ASK_STATE_MESSAGE_FILE"
+      if ! $STATE; then
+        if ! _display_message "$XDGDATADIRS_MESSAGE"; then
+          mkdir -p "$ANYLINUX_APPIMAGES_CONFIG"
+          echo "false" > "$ASK_STATE_MESSAGE_FILE"
+        fi
+      fi
+    else
+      if ! _display_message "$XDGDATADIRS_MESSAGE"; then
+        mkdir -p "$ANYLINUX_APPIMAGES_CONFIG"
+        echo "false" > "$ASK_STATE_MESSAGE_FILE"
+      fi
+    fi
   fi
 
   mkdir -p "${SHAREDIR}"/dbus-1/services/
@@ -63,7 +84,9 @@ export XDG_DATA_DIRS="${XDG_DATA_HOME:-$HOME/.local/share}:${XDG_DATA_DIRS}"'
   echo '[D-BUS Service]' > "$DBUS_SERVICE"
   echo 'Name=org.gnome.Calculator.SearchProvider' >> "$DBUS_SERVICE"
   echo "Exec=$APPIMAGE gnome-calculator-search-provider" >> "$DBUS_SERVICE"
-  cp "${CURRENTDIR}"/share/gnome-shell/search-providers/org.gnome.Calculator-search-provider.ini "$SEARCHP_INI"
+  if [ ! -f "$SEARCHP_INI" ]; then
+    cp "${CURRENTDIR}"/share/gnome-shell/search-providers/org.gnome.Calculator-search-provider.ini "$SEARCHP_INI"
+  fi
   ## Fix filename for AM/appman desktop file in search provider config
   if command -v sed 1>/dev/null; then
     if [ -f /usr/local/share/applications/gnome-calculator-AM.desktop ] || [ -f "${SHAREDIR}/applications/gnome-calculator-AM.desktop" ]; then
