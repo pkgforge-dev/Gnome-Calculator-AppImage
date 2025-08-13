@@ -53,7 +53,9 @@ if [ -n "$APPIMAGE" ] && command -v gnome-shell 1>/dev/null; then
   esac
 
   if ! ${xdg_data_dirs_satisfied:-false}; then
-    _display_message "In order for 'gnome-calculator' AppImage to have search-integration working with 'gnome-shell', please add XDG_DATA_HOME variable to XDG_DATA_DIRS, which can be done in shell profile."
+    _display_message 'In order for 'gnome-calculator' AppImage to have search-integration working with 'gnome-shell', please add XDG_DATA_HOME variable to XDG_DATA_DIRS, which can be done in shell profile, like this:
+
+export XDG_DATA_DIRS="${XDG_DATA_HOME:-$HOME/.local/share}:${XDG_DATA_DIRS}"'
   fi
 
   mkdir -p "${SHAREDIR}"/dbus-1/services/
