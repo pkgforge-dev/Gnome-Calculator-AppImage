@@ -49,7 +49,7 @@ if [ -n "$APPIMAGE" ] && command -v gnome-shell 1>/dev/null; then
   }
 
   case "$XDG_DATA_DIRS" in
-      *"${DATADIR}:"*) xdg_data_dirs_satisfied=true;;
+      *"${SHAREDIR}:"*) xdg_data_dirs_satisfied=true;;
   esac
 
   if ! ${xdg_data_dirs_satisfied:-false}; then
