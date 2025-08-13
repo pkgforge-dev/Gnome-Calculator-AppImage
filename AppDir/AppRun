@@ -62,7 +62,7 @@ if [ -n "$APPIMAGE" ] && command -v gnome-shell 1>/dev/null; then
   echo 'Name=org.gnome.Calculator.SearchProvider' >> "$DBUS_SERVICE"
   echo "Exec=$APPIMAGE gnome-calculator-search-provider" >> "$DBUS_SERVICE"
   cp "${CURRENTDIR}"/share/gnome-shell/search-providers/org.gnome.Calculator-search-provider.ini "$SEARCHP_INI"
-  # Fix filename for AM/appman desktop file in search provider config
+  ## Fix filename for AM/appman desktop file in search provider config
   if command -v sed 1>/dev/null; then
     if [ -f /usr/local/share/applications/gnome-calculator-AM.desktop ] || [ -f "${SHAREDIR}/applications/gnome-calculator-AM.desktop" ]; then
       sed -i 's/^DesktopId=.*/DesktopId=gnome-calculator-AM.desktop/' "$SEARCHP_INI"
