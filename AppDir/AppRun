@@ -1,6 +1,6 @@
 #!/bin/sh
 
-set -e
+set -ex
 
 CURRENTDIR="$(cd "${0%/*}" && echo "$PWD")"
 APPDIR=${APPDIR:-SHARUN_DIR}
