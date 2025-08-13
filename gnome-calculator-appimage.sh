@@ -57,6 +57,12 @@ StartupWMClass=gnome-calculator
 ## Force use of cairo backend
 echo "GSK_RENDERER=cairo" >> ./AppDir/.env
 
+## Do search integration
+mkdir -p ./AppDir/share/gnome-shell/search-providers/
+cp -v /usr/share/gnome-shell/search-providers/org.gnome.Calculator-search-provider.ini ./AppDir/share/gnome-shell/search-providers/org.gnome.Calculator-search-provider.ini
+mkdir -p ./AppDir/share/dbus-1/services/
+cp -v /usr/share/dbus-1/services/org.gnome.Calculator.SearchProvider.service ./AppDir/share/dbus-1/services/org.gnome.Calculator.SearchProvider.service
+
 # MAKE APPIMAGE WITH URUNTIME
 wget --retry-connrefused --tries=30 "$URUNTIME" -O ./uruntime2appimage
 chmod +x ./uruntime2appimage
