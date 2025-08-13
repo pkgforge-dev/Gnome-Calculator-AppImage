@@ -53,13 +53,17 @@ To not get asked again about this change, click "No".'
   fi
 
   mkdir -p "${SHAREDIR}"/dbus-1/services/
-  mkdir -p "${SHAREDIR}"/gnome-shell/search-providers/
   echo '[D-BUS Service]' > "$DBUS_SERVICE"
   echo 'Name=org.gnome.Calculator.SearchProvider' >> "$DBUS_SERVICE"
   echo "Exec=$APPIMAGE gnome-calculator-search-provider" >> "$DBUS_SERVICE"
-  if [ ! -f "$SEARCHP_INI" ]; then
-    cp "${CURRENTDIR}"/share/gnome-shell/search-providers/org.gnome.Calculator-search-provider.ini "$SEARCHP_INI"
-  fi
+
+  mkdir -p "${SHAREDIR}"/gnome-shell/search-providers/
+  echo '[Shell Search Provider]' > "$SEARCHP_INI"
+  echo 'DesktopId=org.gnome.Calculator.desktop' >> "$SEARCHP_INI"
+  echo 'BusName=org.gnome.Calculator.SearchProvider' >> "$SEARCHP_INI"
+  echo 'ObjectPath=/org/gnome/Calculator/SearchProvider' >> "$SEARCHP_INI"
+  echo 'Version=2' >> "$SEARCHP_INI"
+
   ## Fix filename for AM/appman desktop file in search provider config
   if command -v sed 1>/dev/null; then
     if [ -f /usr/local/share/applications/gnome-calculator-AM.desktop ] || [ -f "${SHAREDIR}/applications/gnome-calculator-AM.desktop" ]; then
