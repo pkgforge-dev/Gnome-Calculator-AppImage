@@ -8,7 +8,7 @@ https://github.com/VHSgunzo/sharun/issues/56
 
 ## Known quirks
 
-- Search integration works only on Gnome & it depends on:
+- Search integration works only on Gnome (same as upstream) & it depends on:
   - the desktop file being present (which AppImage managers like `soar` & `am` already take care of).  
     Desktop file needs to be named `org.gnome.Calculator.desktop` for it to work.  
     The only exception is the detection for desktop file `gnome-calculator-AM.desktop` in local directories, which is added as a support for `am` AppImage manager.
