@@ -1,5 +1,9 @@
 #!/bin/sh
 
+set -e
+
+CURRENTDIR="$(cd "${0%/*}" && echo "$PWD")"
+
 # Integrate search-provider into Gnome Shell
 if [ -n "$APPIMAGE" ] && command -v gnome-shell 1>/dev/null; then
 
