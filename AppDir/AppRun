@@ -36,6 +36,7 @@ if [ -n "$APPIMAGE" ] && command -v gnome-shell 1>/dev/null; then
 
   SHAREDIR="${XDG_DATA_HOME:-$HOME/.local/share}"
   DBUS_SERVICE="${SHAREDIR}"/dbus-1/services/org.gnome.Calculator.SearchProvider.service
+  SEARCHP_INI="${SHAREDIR}"/gnome-shell/search-providers/org.gnome.Calculator-search-provider.ini
 
   _display_message() {
 	  if command -v kdialog 1>/dev/null; then
@@ -60,8 +61,13 @@ if [ -n "$APPIMAGE" ] && command -v gnome-shell 1>/dev/null; then
   echo '[D-BUS Service]' > "$DBUS_SERVICE"
   echo 'Name=org.gnome.Calculator.SearchProvider' >> "$DBUS_SERVICE"
   echo "Exec=$APPIMAGE gnome-calculator-search-provider" >> "$DBUS_SERVICE"
-  cp "${CURRENTDIR}"/share/gnome-shell/search-providers/org.gnome.Calculator-search-provider.ini \
-  "${SHAREDIR}"/gnome-shell/search-providers/
+  cp "${CURRENTDIR}"/share/gnome-shell/search-providers/org.gnome.Calculator-search-provider.ini "$SEARCHP_INI"
+  # Fix filename for AM/appman desktop file in search provider config
+  if command -v sed 1>/dev/null; then
+    if [ -f /usr/local/share/applications/gnome-calculator-AM.desktop ] || [ -f "${SHAREDIR}/applications/gnome-calculator-AM.desktop" ]; then
+      sed -i 's/^DesktopId=.*/DesktopId=gnome-calculator-AM.desktop/' "$SEARCHP_INI"
+    fi
+  fi
 fi
 
 # Check if 'gnome-calculator-search-provider' is supplied as $1, then if ARGV0 is supplied, then if $1 is supplied as binary, then if it's the main bin
