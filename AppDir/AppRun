@@ -41,7 +41,10 @@ if [ -n "$APPIMAGE" ] && command -v gnome-shell 1>/dev/null; then
   ASK_STATE_MESSAGE_FILE="${ANYLINUX_APPIMAGES_CONFIG}/${BIN}-xdgdatadirs-message"
   XDGDATADIRS_MESSAGE='In order for "gnome-calculator" AppImage to have search-integration working with "gnome-shell", please add the XDG_DATA_HOME variable to XDG_DATA_DIRS, which can be done in shell profile, like this:
 
-export XDG_DATA_DIRS="${XDG_DATA_HOME:-$HOME/.local/share}:${XDG_DATA_DIRS}"
+case "$XDG_DATA_DIRS" in
+  *"${XDG_DATA_HOME:-$HOME/.local/share}:"*);;
+  *) export XDG_DATA_DIRS="${XDG_DATA_HOME:-$HOME/.local/share}:${XDG_DATA_DIRS}";;
+esac
 
 Then restart the system for changes to apply.
 
