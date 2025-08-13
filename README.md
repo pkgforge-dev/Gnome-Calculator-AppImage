@@ -12,4 +12,4 @@ https://github.com/VHSgunzo/sharun/issues/56
   - the desktop file being present (which AppImage managers like `soar` & `am` already take care of).  
     Desktop file needs to be named `org.gnome.Calculator.desktop` for it to work.  
     The only exception is the detection for desktop file `gnome-calculator-AM.desktop` in local directories, which is added as a support for `am` AppImage manager.
-  - the `XDG_DATA_DIRS` variable having the `XDG_DATA_HOME` in path, which the AppImage will detect + warn about & suggest the solution.
+  - the `XDG_DATA_DIRS` variable having the `XDG_DATA_HOME` in path, which the AppImage will detect if not present + warn about & suggest the solution.
