@@ -15,6 +15,7 @@ export UPINFO="gh-releases-zsync|${GITHUB_REPOSITORY%/*}|${GITHUB_REPOSITORY#*/}
 export OUTNAME="$PACKAGE"-"$VERSION"-anylinux-"$ARCH".AppImage
 export DESKTOP=/usr/share/applications/org.gnome.Calculator.desktop
 export ICON=/usr/share/icons/hicolor/scalable/apps/org.gnome.Calculator.svg
+export PATH_MAPPING_RELATIVE=1 # GTK applications are usually hardcoded to look into /usr/share, especially noticeable in non-working locale
 
 # Prepare AppDir
 mkdir -p ./AppDir/shared/lib
@@ -26,15 +27,11 @@ GSK_RENDERER=cairo ./quick-sharun /usr/bin/gnome-calculator /usr/bin/gcalccmd /u
 cp -vr /usr/share/vala ./AppDir/share/
 cp -vr /usr/share/devhelp ./AppDir/share/
 
-## Copy locale manually, as sharun doesn't do that at the moment
+## Copy only needed locale, to reduce the AppImage size compared to quick-sharun's DEPLOY_LOCALE option, which copies every available locale
 cp -vr /usr/lib/locale           ./AppDir/shared/lib
 cp -r /usr/share/locale          ./AppDir/share
 find ./AppDir/share/locale -type f ! -name '*glib*' ! -name '*gnome-calculator*' -delete
 find ./AppDir/share/locale -type f 
-## Fix hardcoded path for locale
-sed -i 's|/usr/share|././/share|g' ./AppDir/shared/bin/gnome-calculator
-## Needed when locale patch is used
-echo 'SHARUN_WORKING_DIR=${SHARUN_DIR}' > ./AppDir/.env
 
 ## Copy help files for Help section to work
 langs=$(find /usr/share/help/*/gnome-calculator/ -type f | awk -F'/' '{print $5}' | sort | uniq)
