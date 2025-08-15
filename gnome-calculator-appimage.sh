@@ -16,6 +16,8 @@ export OUTNAME="$PACKAGE"-"$VERSION"-anylinux-"$ARCH".AppImage
 export DESKTOP=/usr/share/applications/org.gnome.Calculator.desktop
 export ICON=/usr/share/icons/hicolor/scalable/apps/org.gnome.Calculator.svg
 export PATH_MAPPING_RELATIVE=1 # GTK applications are usually hardcoded to look into /usr/share, especially noticeable in non-working locale
+export DEPLOY_LOCALE=1
+export DEBLOAT_LOCALE=1
 
 # Prepare AppDir
 mkdir -p ./AppDir/shared/lib
@@ -26,12 +28,6 @@ chmod +x ./quick-sharun
 GSK_RENDERER=cairo ./quick-sharun /usr/bin/gnome-calculator /usr/bin/gcalccmd /usr/lib/gnome-calculator-search-provider
 cp -vr /usr/share/vala ./AppDir/share/
 cp -vr /usr/share/devhelp ./AppDir/share/
-
-## Copy only needed locale, to reduce the AppImage size compared to quick-sharun's DEPLOY_LOCALE option, which copies every available locale
-cp -vr /usr/lib/locale           ./AppDir/shared/lib
-cp -r /usr/share/locale          ./AppDir/share
-find ./AppDir/share/locale -type f ! -name '*glib*' ! -name '*gnome-calculator*' -delete
-find ./AppDir/share/locale -type f 
 
 ## Copy help files for Help section to work
 langs=$(find /usr/share/help/*/gnome-calculator/ -type f | awk -F'/' '{print $5}' | sort | uniq)
