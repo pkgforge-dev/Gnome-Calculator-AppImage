@@ -17,7 +17,6 @@ export DESKTOP=/usr/share/applications/org.gnome.Calculator.desktop
 export ICON=/usr/share/icons/hicolor/scalable/apps/org.gnome.Calculator.svg
 export PATH_MAPPING_RELATIVE=1 # GTK applications are usually hardcoded to look into /usr/share, especially noticeable in non-working locale
 export DEPLOY_LOCALE=1
-export DEBLOAT_LOCALE=1
 
 # Prepare AppDir
 mkdir -p ./AppDir/shared/lib
