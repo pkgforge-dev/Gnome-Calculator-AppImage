@@ -46,10 +46,13 @@ sed -i '/^\[Desktop Entry\]/a\
 StartupWMClass=gnome-calculator
 ' ./AppDir/*.desktop
 
+## Further debloat locale
+find ./AppDir/share/locale -type f ! -name '*glib*' ! -name '*gnome-calculator*' -delete
+
 ## Force use of cairo backend
 echo "GSK_RENDERER=cairo" >> ./AppDir/.env
 
-## Do search integration
+## Copy files needed for search integration
 mkdir -p ./AppDir/share/gnome-shell/search-providers/
 cp -v /usr/share/gnome-shell/search-providers/org.gnome.Calculator-search-provider.ini ./AppDir/share/gnome-shell/search-providers/org.gnome.Calculator-search-provider.ini
 mkdir -p ./AppDir/share/dbus-1/services/
