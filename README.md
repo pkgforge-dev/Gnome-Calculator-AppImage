@@ -5,7 +5,7 @@ When the known issue gets solved, repo will be transfered to pkgforge-dev repo &
 
 ## Known issue
 
-- Currency conversion only works in Arch-based distros, investigating the issue here:  
+- Currency conversion only works in Arch-based distros due to TLS certificate database errors, investigating the issue here:  
 https://github.com/VHSgunzo/sharun/issues/56
 
 ## Known quirks
