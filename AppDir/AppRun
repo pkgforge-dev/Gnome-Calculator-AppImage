@@ -32,7 +32,9 @@ _get_main_bin_name() {
 _get_main_bin_name
 
 # Integrate search-provider into Gnome Shell
-if [ -n "$APPIMAGE" ] && command -v gnome-shell 1>/dev/null; then
+if [ -n "$APPIMAGE" ] && command -v gnome-shell 1>/dev/null && \
+[ ! -f /usr/share/dbus-1/services/org.gnome.Calculator.SearchProvider.service ] && [ ! -f /usr/share/gnome-shell/search-providers/org.gnome.Calculator-search-provider.ini ] && \
+[ ! -f /usr/local/share/dbus-1/services/org.gnome.Calculator.SearchProvider.service ] && [ ! -f /usr/local/share/gnome-shell/search-providers/org.gnome.Calculator-search-provider.ini ]; then
 
   SHAREDIR="${XDG_DATA_HOME:-$HOME/.local/share}"
   DBUS_SERVICE="${SHAREDIR}"/dbus-1/services/org.gnome.Calculator.SearchProvider.service
