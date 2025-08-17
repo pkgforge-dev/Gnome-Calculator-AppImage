@@ -35,9 +35,9 @@ for lang in $langs; do
   cp -vr /usr/share/help/$lang/gnome-calculator/* ./AppDir/share/help/$lang/gnome-calculator/
 done
 
-# Patch StartupWMClass to work on X11
-# Doesn't work when ran in Wayland, as it's 'org.gnome.Calculator' instead.
-# It needs to be manually changed by the user in this case.
+## Patch StartupWMClass to work on X11
+## Doesn't work when ran in Wayland, as it's 'org.gnome.Calculator' instead.
+## It needs to be manually changed by the user in this case.
 sed -i '/^\[Desktop Entry\]/a\
 StartupWMClass=gnome-calculator
 ' ./AppDir/*.desktop
