@@ -45,6 +45,9 @@ StartupWMClass=gnome-calculator
 ## Further debloat locale
 find ./AppDir/share/locale -type f ! -name '*glib*' ! -name '*gnome-calculator*' -delete
 
+## Set gsettings to save to keyfile, instead to dconf
+echo "GSETTINGS_BACKEND=keyfile" >> ./AppDir/.env
+
 ## Force use of cairo backend
 echo "GSK_RENDERER=cairo" >> ./AppDir/.env
 
