@@ -31,17 +31,6 @@ _get_main_bin_name() {
 
 _get_main_bin_name
 
-# additional scripts can be placed in the top level bin dir
-# those with a name that ends up .hook will be executed in teh current shell
-# while those that end with bg.hook will be executed in the background
-for hook in "$CURRENTDIR"/bin/*.hook; do
-	[ -x "$hook" ] || continue
-	case "$hook" in
-		*.bg.hook) >&2 echo "exec bg hook: $hook"; "$hook" &;;
-		*.hook)    >&2 echo "exec hook: $hook";    "$hook"  ;;
-	esac
-done
-
 # Integrate search-provider into Gnome Shell
 if [ -n "$APPIMAGE" ] && command -v gnome-shell 1>/dev/null && \
 [ ! -f /usr/share/dbus-1/services/org.gnome.Calculator.SearchProvider.service ] && [ ! -f /usr/share/gnome-shell/search-providers/org.gnome.Calculator-search-provider.ini ] && \
