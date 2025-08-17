@@ -35,10 +35,6 @@ for lang in $langs; do
   cp -vr /usr/share/help/$lang/gnome-calculator/* ./AppDir/share/help/$lang/gnome-calculator/
 done
 
-## Copy the icon to AppDir's share, as it's not copied by default
-mkdir -p           ./AppDir/share/icons/hicolor/scalable/apps/
-cp -v "$ICON"      ./AppDir/"${ICON#/usr/}"
-
 # Patch StartupWMClass to work on X11
 # Doesn't work when ran in Wayland, as it's 'org.gnome.Calculator' instead.
 # It needs to be manually changed by the user in this case.
