@@ -13,11 +13,11 @@ AppImage made using [sharun](https://github.com/VHSgunzo/sharun), which makes it
 
 It is possible that this appimage may fail to work with appimagelauncher, I recommend these alternatives instead: 
 
-* [AM](https://github.com/ivan-hc/AM) `am -i rnote` or `appman -i rnote`
+* [AM](https://github.com/ivan-hc/AM) `am -i gnome-calculator` or `appman -i gnome-calculator`
 
-* [dbin](https://github.com/xplshn/dbin) `dbin install rnote.appimage`
+* [dbin](https://github.com/xplshn/dbin) `dbin install gnome-calculator.appimage`
 
-* [soar](https://github.com/pkgforge/soar) `soar install rnote`
+* [soar](https://github.com/pkgforge/soar) `soar install gnome-calculator`
 
 This appimage works without fuse2 as it can use fuse3 instead, it can also work without fuse at all thanks to the [uruntime](https://github.com/VHSgunzo/uruntime)
 
