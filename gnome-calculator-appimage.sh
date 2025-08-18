@@ -27,7 +27,7 @@ cp -vr /usr/share/devhelp ./AppDir/share/
 
 # fix TLS issue
 # TODO remove this once quick-sharun adds this fix
-sed -i 's|/usr|././|g' ./AppDir/shared/lib/lib/libp11-kit* ./AppDir/shared/lib/pkcs11/*
+sed -i 's|/usr|././|g' ./AppDir/shared/lib/libp11-kit* ./AppDir/shared/lib/pkcs11/*
 cp -rv /usr/share/p11-kit         ./AppDir/share
 cp -rv /usr/share/ca-certificates ./AppDir/share
 
