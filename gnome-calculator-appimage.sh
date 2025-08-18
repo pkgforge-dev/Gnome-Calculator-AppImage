@@ -18,15 +18,18 @@ export ICON=/usr/share/icons/hicolor/scalable/apps/org.gnome.Calculator.svg
 export PATH_MAPPING_RELATIVE=1 # GTK applications are usually hardcoded to look into /usr/share, especially noticeable in non-working locale, hence why this is used
 export DEPLOY_LOCALE=1
 
-# Prepare AppDir
-mkdir -p ./AppDir/shared/lib
-
 # DEPLOY ALL LIBS
 wget --retry-connrefused --tries=30 "$SHARUN" -O ./quick-sharun
 chmod +x ./quick-sharun
 GSK_RENDERER=cairo ./quick-sharun /usr/bin/gnome-calculator /usr/bin/gcalccmd /usr/lib/gnome-calculator-search-provider
 cp -vr /usr/share/vala ./AppDir/share/
 cp -vr /usr/share/devhelp ./AppDir/share/
+
+# fix TLS issue
+# TODO remove this once quick-sharun adds this fix
+sed -i 's|/usr|././|g' ./AppDir/shared/lib/lib/libp11-kit* ./AppDir/shared/lib/pkcs11/*
+cp -rv /usr/share/p11-kit         ./AppDir/share
+cp -rv /usr/share/ca-certificates ./AppDir/share
 
 ## Copy help files for Help section to work
 langs=$(find /usr/share/help/*/gnome-calculator/ -type f | awk -F'/' '{print $5}' | sort | uniq)
