@@ -11,7 +11,7 @@ if [ -n "$APPIMAGE" ] && command -v gnome-shell 1>/dev/null && \
   DBUS_SERVICE="${SHAREDIR}"/dbus-1/services/org.gnome.Calculator.SearchProvider.service
   SEARCHP_INI="${SHAREDIR}"/gnome-shell/search-providers/org.gnome.Calculator-search-provider.ini
   ANYLINUX_APPIMAGES_CONFIG="${XDG_CONFIG_HOME:-$HOME/.config}/anylinux-appimages"
-  ASK_STATE_MESSAGE_FILE="${ANYLINUX_APPIMAGES_CONFIG}/${BIN}-xdgdatadirs-message"
+  ASK_STATE_MESSAGE_FILE="${ANYLINUX_APPIMAGES_CONFIG}/gnome-calculator-xdgdatadirs-message"
   XDGDATADIRS_MESSAGE='In order for "gnome-calculator" AppImage to have search-integration working with "gnome-shell", please add the XDG_DATA_HOME variable to XDG_DATA_DIRS, which can be done in shell profile, like this:
 
 case "$XDG_DATA_DIRS" in
