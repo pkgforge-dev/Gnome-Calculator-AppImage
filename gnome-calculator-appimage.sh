@@ -5,7 +5,9 @@ set -eux
 ARCH="$(uname -m)"
 PACKAGE=gnome-calculator
 URUNTIME="https://raw.githubusercontent.com/pkgforge-dev/Anylinux-AppImages/refs/heads/main/useful-tools/uruntime2appimage.sh"
-SHARUN="https://raw.githubusercontent.com/pkgforge-dev/Anylinux-AppImages/refs/heads/main/useful-tools/quick-sharun.sh"
+# Test new sharun temporarily for TLS fix
+SHARUN="https://raw.githubusercontent.com/pkgforge-dev/Anylinux-AppImages/f6f8c7eb0eaab87892b8e8af91a111a41cdf33c5/useful-tools/quick-sharun.sh"
+#SHARUN="https://raw.githubusercontent.com/pkgforge-dev/Anylinux-AppImages/refs/heads/main/useful-tools/quick-sharun.sh"
 
 VERSION=$(pacman -Q "$PACKAGE" | awk 'NR==1 {print $2; exit}')
 [ -n "$VERSION" ] && echo "$VERSION" > ~/version
