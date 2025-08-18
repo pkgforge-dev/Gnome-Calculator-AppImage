@@ -15,7 +15,7 @@ export UPINFO="gh-releases-zsync|${GITHUB_REPOSITORY%/*}|${GITHUB_REPOSITORY#*/}
 export OUTNAME="$PACKAGE"-"$VERSION"-anylinux-"$ARCH".AppImage
 export DESKTOP=/usr/share/applications/org.gnome.Calculator.desktop
 export ICON=/usr/share/icons/hicolor/scalable/apps/org.gnome.Calculator.svg
-export PATH_MAPPING_RELATIVE=1 # GTK applications are usually hardcoded to look into /usr/share, especially noticeable in non-working locale, hence why this is used
+export PATH_MAPPING_HARDCODED=1 # GTK applications are usually hardcoded to look into /usr/share, especially noticeable in non-working locale, hence why this is used
 export DEPLOY_LOCALE=1
 
 # DEPLOY ALL LIBS
