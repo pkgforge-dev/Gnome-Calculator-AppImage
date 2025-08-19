@@ -5,9 +5,7 @@ set -eux
 ARCH="$(uname -m)"
 PACKAGE=gnome-calculator
 URUNTIME="https://raw.githubusercontent.com/pkgforge-dev/Anylinux-AppImages/refs/heads/main/useful-tools/uruntime2appimage.sh"
-# Test new sharun temporarily for TLS fix
-SHARUN="https://raw.githubusercontent.com/pkgforge-dev/Anylinux-AppImages/7939e665640f32d885f59f8b65e2dbf0be9d5024/useful-tools/quick-sharun.sh"
-#SHARUN="https://raw.githubusercontent.com/pkgforge-dev/Anylinux-AppImages/refs/heads/main/useful-tools/quick-sharun.sh"
+SHARUN="https://raw.githubusercontent.com/pkgforge-dev/Anylinux-AppImages/refs/heads/main/useful-tools/quick-sharun.sh"
 
 VERSION=$(pacman -Q "$PACKAGE" | awk 'NR==1 {print $2; exit}')
 [ -n "$VERSION" ] && echo "$VERSION" > ~/version
@@ -19,6 +17,7 @@ export DESKTOP=/usr/share/applications/org.gnome.Calculator.desktop
 export ICON=/usr/share/icons/hicolor/scalable/apps/org.gnome.Calculator.svg
 export PATH_MAPPING_HARDCODED=1 # GTK applications are usually hardcoded to look into /usr/share, especially noticeable in non-working locale, hence why this is used
 export DEPLOY_LOCALE=1
+export STARTUPWMCLASS=gnome-calculator
 
 # DEPLOY ALL LIBS
 wget --retry-connrefused --tries=30 "$SHARUN" -O ./quick-sharun
@@ -33,13 +32,6 @@ for lang in $langs; do
   mkdir -p ./AppDir/share/help/$lang/gnome-calculator/
   cp -vr /usr/share/help/$lang/gnome-calculator/* ./AppDir/share/help/$lang/gnome-calculator/
 done
-
-## Patch StartupWMClass to work on X11
-## Doesn't work when ran in Wayland, as it's 'org.gnome.Calculator' instead.
-## It needs to be manually changed by the user in this case.
-sed -i '/^\[Desktop Entry\]/a\
-StartupWMClass=gnome-calculator
-' ./AppDir/*.desktop
 
 ## Further debloat locale
 find ./AppDir/share/locale -type f ! -name '*glib*' ! -name '*gnome-calculator*' -delete
