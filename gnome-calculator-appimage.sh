@@ -15,8 +15,7 @@ export UPINFO="gh-releases-zsync|${GITHUB_REPOSITORY%/*}|${GITHUB_REPOSITORY#*/}
 export OUTNAME="$PACKAGE"-"$VERSION"-anylinux-"$ARCH".AppImage
 export DESKTOP=/usr/share/applications/org.gnome.Calculator.desktop
 export ICON=/usr/share/icons/hicolor/scalable/apps/org.gnome.Calculator.svg
-export STARTUPWMCLASS=gnome-calculator # For Wayland, this is 'org.gnome.Calculator', so this needs to be changed manually by the user until some potential automatic fix exists for this
-
+export STARTUPWMCLASS=gnome-calculator # For Wayland, this is 'org.gnome.Calculator', so this needs to be changed in desktop file manually by the user in that case until some potential automatic fix exists for this
 # DEPLOY ALL LIBS
 wget --retry-connrefused --tries=30 "$SHARUN" -O ./quick-sharun
 chmod +x ./quick-sharun
