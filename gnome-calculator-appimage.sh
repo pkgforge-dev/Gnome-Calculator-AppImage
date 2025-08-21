@@ -21,7 +21,7 @@ export STARTUPWMCLASS=gnome-calculator # For Wayland, this is 'org.gnome.Calcula
 # DEPLOY ALL LIBS
 wget --retry-connrefused --tries=30 "$SHARUN" -O ./quick-sharun
 chmod +x ./quick-sharun
-GSK_RENDERER=ngl ./quick-sharun /usr/bin/gnome-calculator /usr/bin/gcalccmd /usr/lib/gnome-calculator-search-provider
+./quick-sharun /usr/bin/gnome-calculator /usr/bin/gcalccmd /usr/lib/gnome-calculator-search-provider
 cp -vr /usr/share/vala ./AppDir/share/
 cp -vr /usr/share/devhelp ./AppDir/share/
 
@@ -37,9 +37,6 @@ find ./AppDir/share/locale -type f ! -name '*glib*' ! -name '*gnome-calculator*'
 
 ## Set gsettings to save to keyfile, instead to dconf
 echo "GSETTINGS_BACKEND=keyfile" >> ./AppDir/.env
-
-## Force use of ngl backend, as Vulkan is problematic + it reduces the size of the AppImage
-echo "GSK_RENDERER=ngl" >> ./AppDir/.env
 
 ## Copy files needed for search integration
 mkdir -p ./AppDir/share/gnome-shell/search-providers/
