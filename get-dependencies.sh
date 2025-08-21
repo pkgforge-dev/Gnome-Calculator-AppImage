@@ -4,16 +4,18 @@ set -eux
 
 sed -i 's/DownloadUser/#DownloadUser/g' /etc/pacman.conf
 
-if [ "$(uname -m)" = 'x86_64' ]; then
+ARCH="$(uname -m)"
+
+if [ "$ARCH" = 'x86_64' ]; then
 	PKG_TYPE='x86_64.pkg.tar.zst'
 else
 	PKG_TYPE='aarch64.pkg.tar.xz'
 fi
 
 LIBXML_URL="https://github.com/pkgforge-dev/llvm-libs-debloated/releases/download/continuous/libxml2-iculess-$PKG_TYPE"
-LLVM_URL="https://github.com/pkgforge-dev/llvm-libs-debloated/releases/download/continuous/llvm-libs-nano-$PKG_TYPE"
-# opus is not used by the app, it's just to debloat the base install
 OPUS_URL="https://github.com/pkgforge-dev/llvm-libs-debloated/releases/download/continuous/opus-nano-$PKG_TYPE"
+MESA_URL="https://github.com/pkgforge-dev/llvm-libs-debloated/releases/download/continuous/mesa-mini-$PKG_TYPE"
+INTEL_MEDIA_URL="https://github.com/pkgforge-dev/llvm-libs-debloated/releases/download/continuous/intel-media-mini-$PKG_TYPE" 
 
 echo "Installing build dependencies for sharun & AppImage integration..."
 echo "---------------------------------------------------------------"
@@ -33,16 +35,16 @@ pacman -Syu --noconfirm \
 
 echo "Installing debloated packages..."
 echo "---------------------------------------------------------------"
-wget --retry-connrefused --tries=30 "$LLVM_URL"    -O  ./llvm-libs.pkg.tar.zst
 wget --retry-connrefused --tries=30 "$LIBXML_URL"  -O  ./libxml2-iculess.pkg.tar.zst
 wget --retry-connrefused --tries=30 "$OPUS_URL"    -O  ./opus-nano.pkg.tar.zst
+wget --retry-connrefused --tries=30 "$MESA_URL"        -O  ./mesa.pkg.tar.zst
+
+if [ "$ARCH" = 'x86_64' ]; then
+	wget --retry-connrefused --tries=30 "$INTEL_MEDIA_URL"  -O ./intel-media.pkg.tar.zst
+fi
 
 pacman -U --noconfirm ./*.pkg.tar.zst
 rm -f ./*.pkg.tar.zst
-
-# Remove mesa, as GPU acceleration is not really needed for a calculator
-# We force cairo backend
-pacman -Rsndd --noconfirm mesa
 
 echo "All done!"
 echo "---------------------------------------------------------------"
