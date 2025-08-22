@@ -35,10 +35,10 @@ pacman -Syu --noconfirm \
 
 echo "Installing debloated packages..."
 echo "---------------------------------------------------------------"
-wget --retry-connrefused --tries=30 "$LIBXML2_URL"  -O  ./"libxml2-mini-$PKG_TYPE"
+wget --retry-connrefused --tries=30 "$LIBXML2_URL" -O  ./"libxml2-mini-$PKG_TYPE"
 wget --retry-connrefused --tries=30 "$OPUS_URL"    -O  ./"opus-mini-$PKG_TYPE"
-wget --retry-connrefused --tries=30 "$MESA_URL"        -O  ./"mesa-nano-$PKG_TYPE"
-wget --retry-connrefused --tries=30 "$GTK4_URL"        -O  ./"gtk4-mini-$PKG_TYPE"
+wget --retry-connrefused --tries=30 "$MESA_URL"    -O  ./"mesa-nano-$PKG_TYPE"
+wget --retry-connrefused --tries=30 "$GTK4_URL"    -O  ./"gtk4-mini-$PKG_TYPE"
 
 pacman -U --noconfirm ./*.pkg.*
 rm -f ./*.pkg.*
