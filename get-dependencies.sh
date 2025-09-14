@@ -2,8 +2,6 @@
 
 set -eux
 
-sed -i 's/DownloadUser/#DownloadUser/g' /etc/pacman.conf
-
 DEBLOATED_PKGS_INSTALLER="https://raw.githubusercontent.com/pkgforge-dev/Anylinux-AppImages/refs/heads/main/useful-tools/get-debloated-pkgs.sh"
 
 echo "Installing build dependencies for sharun & AppImage integration..."
@@ -28,5 +26,6 @@ wget --retry-connrefused --tries=30 "$DEBLOATED_PKGS_INSTALLER" -O ./get-debloat
 chmod +x ./get-debloated-pkgs.sh
 ./get-debloated-pkgs.sh libxml2-mini mesa-nano gtk4-mini
 
-echo "All done!"
+echo "Extracting the app version into a version file"
 echo "---------------------------------------------------------------"
+pacman -Q gnome-calculator | awk '{print $2; exit}' > ~/version
