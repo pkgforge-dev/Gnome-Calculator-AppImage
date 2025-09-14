@@ -6,9 +6,7 @@ ARCH="$(uname -m)"
 PACKAGE=gnome-calculator
 URUNTIME="https://raw.githubusercontent.com/pkgforge-dev/Anylinux-AppImages/refs/heads/main/useful-tools/uruntime2appimage.sh"
 SHARUN="https://raw.githubusercontent.com/pkgforge-dev/Anylinux-AppImages/refs/heads/main/useful-tools/quick-sharun.sh"
-
-VERSION=$(pacman -Q "$PACKAGE" | awk 'NR==1 {print $2; exit}')
-[ -n "$VERSION" ] && echo "$VERSION" > ~/version
+VERSION="$(cat ~/version)"
 
 # Variables used by quick-sharun
 export UPINFO="gh-releases-zsync|${GITHUB_REPOSITORY%/*}|${GITHUB_REPOSITORY#*/}|latest|*$ARCH.AppImage.zsync"
@@ -48,3 +46,8 @@ cp -v /usr/share/dbus-1/services/org.gnome.Calculator.SearchProvider.service ./A
 wget --retry-connrefused --tries=30 "$URUNTIME" -O ./uruntime2appimage
 chmod +x ./uruntime2appimage
 ./uruntime2appimage
+
+# PREPARE APPIMAGE FOR RELEASE
+mkdir -p ./dist
+mv -v ./*.AppImage* ./dist
+mv -v ~/version     ./dist
