@@ -1,0 +1,8 @@
+#!/bin/sh
+
+# Check if 'gnome-calculator-search-provider' is supplied as $1, then if ARGV0 is supplied, then if $1 is supplied as binary, then if it's the main bin
+if [ -f "$CURRENTDIR"/bin/"$1" ] && [ "$1" = "gnome-calculator-search-provider" ]; then
+	BIN="$1"
+    shift
+	exec "$CURRENTDIR"/bin/"$BIN" "$@"
+fi
