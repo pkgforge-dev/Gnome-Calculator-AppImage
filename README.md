@@ -39,7 +39,7 @@ More at: [AnyLinux-AppImages](https://pkgforge-dev.github.io/Anylinux-AppImages/
     The only exception is the detection for desktop file `gnome-calculator-AM.desktop` in local directories, which is added as a support for `am` AppImage manager.
   - the `XDG_DATA_DIRS` variable having the `XDG_DATA_HOME` in path, which the AppImage will detect if not present + warn about & suggest the solution.
   - This operation won't be performed if search integration files already exist in `/usr/share/` or `/usr/local/share/`, as it's assumed that the packager and/or system-administrator already handled that integration to the system. Modifying `XDG_DATA_DIRS` in that case is not needed.
-- If you use AppImage portable folders feature, you didn't manually integrate search-provider to the system & you want to use the search-provider functionality, than only use portable `appimage-filename.config` and `appimage-filename.cache` folder to make the functionality work.
-  - If you want to clean `$HOME` after uninstallation, you need to remove the files below, which are used for search-provider integration:
-    - `${XDG_DATA_HOME}/gnome-shell/search-providers/org.gnome.Calculator-search-provider.ini`
-    - `${XDG_DATA_HOME}/dbus-1/services/org.gnome.Calculator.SearchProvider.service`
+  - If you use the AppImage portable folders feature, you only need to use portable `appimage-filename.config` and `appimage-filename.cache` folder to make the search-provider functionality work and host's `${HOME}` clean.
+    - Only those are the files that need to be in host's `${XDG_DATA_HOME}` for search-provider functionality to work, which you can delete after the app uninstallation:
+      - `${XDG_DATA_HOME}/gnome-shell/search-providers/org.gnome.Calculator-search-provider.ini`
+      - `${XDG_DATA_HOME}/dbus-1/services/org.gnome.Calculator.SearchProvider.service`
