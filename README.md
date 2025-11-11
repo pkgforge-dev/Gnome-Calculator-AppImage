@@ -3,6 +3,10 @@
 [![GitHub Downloads](https://img.shields.io/github/downloads/pkgforge-dev/Gnome-Calculator-AppImage/total?logo=github&label=GitHub%20Downloads)](https://github.com/pkgforge-dev/Gnome-Calculator-AppImage/releases/latest)
 [![CI Build Status](https://github.com//pkgforge-dev/Gnome-Calculator-AppImage/actions/workflows/blank.yml/badge.svg)](https://github.com/pkgforge-dev/Gnome-Calculator-AppImage/releases/latest)
 
+<p align="center">
+  <img src="https://gitlab.gnome.org/GNOME/gnome-calculator/-/raw/main/data/icons/hicolor/scalable/apps/org.gnome.Calculator.svg?ref_type=heads" />
+</p>
+
 * [Latest Stable Release](https://github.com/pkgforge-dev/Gnome-Calculator-AppImage/releases/latest)
 
 ---
