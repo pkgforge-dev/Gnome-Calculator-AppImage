@@ -47,6 +47,6 @@ More at: [AnyLinux-AppImages](https://pkgforge-dev.github.io/Anylinux-AppImages/
     - Only those are the files that need to be in host's `${XDG_DATA_HOME}` for search-provider functionality to work, which you can delete after the app uninstallation:
       - `${XDG_DATA_HOME}/gnome-shell/search-providers/org.gnome.Calculator-search-provider.ini`
       - `${XDG_DATA_HOME}/dbus-1/services/org.gnome.Calculator.SearchProvider.service`
-    - When you click the search entry to copy the calculation result, it will copy it, but the notification about it won't show
+  - When you click the search entry to copy the calculation result, it will copy it, but the notification about it won't show
 - Help page only works if `gnome-help` or other similar `.page` viewer is installed on the host's system.  
 Bundling the help page viewer in the AppImage would make it work everywhere, but it's both bad for the file size and [security](https://blogs.gnome.org/mcatanzaro/2025/04/15/dangerous-arbitrary-file-read-vulnerability-in-yelp-cve-2025-3155/), hence why we don't do that.
