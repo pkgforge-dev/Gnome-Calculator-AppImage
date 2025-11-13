@@ -32,9 +32,6 @@ cp -v /usr/share/gnome-shell/search-providers/org.gnome.Calculator-search-provid
 mkdir -p ./AppDir/share/dbus-1/services/
 cp -v /usr/share/dbus-1/services/org.gnome.Calculator.SearchProvider.service ./AppDir/share/dbus-1/services/org.gnome.Calculator.SearchProvider.service
 
-## Set gsettings to save to keyfile, instead to dconf
-echo "GSETTINGS_BACKEND=keyfile" >> ./AppDir/.env
-
 # Make the AppImage with uruntime
 ./quick-sharun --make-appimage
 
