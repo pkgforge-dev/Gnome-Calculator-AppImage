@@ -18,14 +18,8 @@ quick-sharun /usr/bin/gnome-calculator \
              /usr/bin/gcalccmd \
              /usr/lib/gnome-calculator-search-provider \
              /usr/share/vala \
-             /usr/share/devhelp
-
-## Copy help files for Help section to work
-langs=$(find /usr/share/help/*/gnome-calculator/ -type f | awk -F'/' '{print $5}' | sort | uniq)
-for lang in $langs; do
-  mkdir -p ./AppDir/share/help/$lang/gnome-calculator/
-  cp -vr /usr/share/help/$lang/gnome-calculator/* ./AppDir/share/help/$lang/gnome-calculator/
-done
+             /usr/share/devhelp \
+             /usr/share/help/*/gnome-calculator
 
 ## Copy files needed for search integration
 mkdir -p ./AppDir/share/gnome-shell/search-providers/
