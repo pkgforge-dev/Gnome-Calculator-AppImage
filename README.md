@@ -1,3 +1,5 @@
+<div align="center">
+
 # Gnome Calculator AppImage 🐧
 
 [![GitHub Downloads](https://img.shields.io/github/downloads/pkgforge-dev/Gnome-Calculator-AppImage/total?logo=github&label=GitHub%20Downloads)](https://github.com/pkgforge-dev/Gnome-Calculator-AppImage/releases/latest)
@@ -8,7 +10,11 @@
   <img src="https://gitlab.gnome.org/GNOME/gnome-calculator/-/raw/main/data/icons/hicolor/scalable/apps/org.gnome.Calculator.svg?ref_type=heads" width="128" />
 </p>
 
-* [Upstream URL](https://gitlab.gnome.org/GNOME/gnome-calculator)
+| Latest Stable Release | Upstream URL |
+| :---: | :---: |
+| [Click here](https://github.com/pkgforge-dev/Gnome-Calculator-AppImage/releases/latest) | [Click here](https://gitlab.gnome.org/GNOME/gnome-calculator) |
+
+</div>
 
 ---
 
