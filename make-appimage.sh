@@ -30,3 +30,6 @@ cp -v /usr/share/dbus-1/services/org.gnome.Calculator.SearchProvider.service ./A
 
 # Turn AppDir into AppImage
 quick-sharun --make-appimage
+
+# Test the final app
+quick-sharun --test ./dist/*.AppImage
