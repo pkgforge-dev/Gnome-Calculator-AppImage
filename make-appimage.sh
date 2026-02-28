@@ -18,7 +18,6 @@ export ALWAYS_SOFTWARE=1 # force only software, hardware accel is not really nee
 quick-sharun /usr/bin/gnome-calculator \
              /usr/bin/gcalccmd \
              /usr/lib/gnome-calculator-search-provider \
-             /usr/share/vala \
              /usr/share/devhelp \
              /usr/share/help/*/gnome-calculator
 
